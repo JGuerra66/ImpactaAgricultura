@@ -12,3 +12,12 @@ export const headerLinks = [
       route: '/profile',
     },
   ]
+
+export const productDefaultValues = {
+    name: '',
+    description: '',
+    photo: '',
+    price: 0,
+    unit: '',
+    category: '',
+}
