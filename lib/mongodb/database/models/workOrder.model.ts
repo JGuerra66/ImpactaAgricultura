@@ -15,6 +15,7 @@ export interface IWorkOrder extends Document {
     lot: {_id: string, name: string};
     usedProducts: [usedProductsSubSchema];
     deposit: {_id: string, name: string};
+    creator: {_id: string, firstName: string, lastName: string};
 }
 
 const usedProductsSubSchema = new Schema({
@@ -31,6 +32,7 @@ const WorkOrderSchema = new Schema({
     lot: {type: Schema.Types.ObjectId, ref: 'Lot'},
     usedProducts: [usedProductsSubSchema],
     deposit: {type: Schema.Types.ObjectId, ref: 'Deposit'},
+    creator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 });
 
 const WorkOrder = models.WorkOrder || model('WorkOrder', WorkOrderSchema);
