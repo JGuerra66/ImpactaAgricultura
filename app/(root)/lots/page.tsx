@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default function DemoPage() {
-  const [data, setData] = React.useState<Lot[]>([])
+  /* const [data, setData] = React.useState<Lot[]>([])
 
   React.useEffect(() => {
     getAllLots().then(response => {
@@ -18,7 +18,7 @@ export default function DemoPage() {
         console.error('getAllLots did not return a response')
       }
     }).catch(console.error)
-  }, [])
+  }, []) */
 
   return (
     <div className="container mx-auto py-10">
