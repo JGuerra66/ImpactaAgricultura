@@ -22,11 +22,11 @@ export default function DemoPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      
       <Link href="/lots/create">
         <Button variant="default" size="default">Crear Lote</Button>
       </Link>
     </div>
-    
+    //<DataTable columns={columns} data={data} />
   )
 }

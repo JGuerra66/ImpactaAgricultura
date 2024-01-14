@@ -10,7 +10,7 @@ export const headerLinks = [
 
     {
       label: 'Lotes',
-      route: 'lots'
+      route: '/lots'
     },
     
     {
