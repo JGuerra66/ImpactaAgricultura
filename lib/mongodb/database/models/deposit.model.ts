@@ -13,7 +13,7 @@ const DepositSchema = new Schema({
     name: {type: String, required: true},
     depositLocation: {type: String, required: false},
     photo: {type: String, required: false},
-    type: {type: String, required: true},
+    type: {type: String, required: true, enum: ['Establecimiento', 'Acopio']},
     creator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
 });
 

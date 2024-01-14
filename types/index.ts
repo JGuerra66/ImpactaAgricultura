@@ -112,7 +112,7 @@ export type CreateDepositParams = {
   deposit: {
     name: string;
     depositLocation: string;
-    photo: string;
+    photo?: string;
     type: string;
   }
   path: string
@@ -124,7 +124,7 @@ export type UpdateDepositParams = {
     _id: string;
     name: string;
     depositLocation: string;
-    photo: string;
+    photo?: string;
     type: string;
   }
   path: string

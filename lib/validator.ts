@@ -19,3 +19,26 @@ export const productFormSchema = z.object({
     kmzFile: z.string().optional(),
 
   });
+
+  export const depositFormSchema = z.object({
+    name: z.string().min(3).max(255),
+    depositLocation: z.string().min(3).max(255),
+    type: z.string(),
+    
+  });
+
+  export const stockMovementHistoryFormSchema = z.object({
+    product: z.object({
+        _id: z.string(),
+        name: z.string(),
+    }),
+    quantity: z.number().min(0),
+    unit: z.string(),
+    deposit: z.object({
+        _id: z.string(),
+        name: z.string(),
+    }),
+    typeOfMovement: z.string(),
+    description: z.string().optional(),
+    date: z.string().optional(),
+  });

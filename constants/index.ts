@@ -46,3 +46,20 @@ export const lotDefaultValues = {
   unit: '',
   category: '',
 }
+
+export const depositDefaultValues = {
+  name: '',
+  depositLocation: '',
+  type: '',
+  description: '',
+}
+
+export const stockMovementDefaultValues = {
+  product: { _id: '', name: '' },
+  quantity: 0,
+  unit: '',
+  deposit: { _id: '', name: '' },
+  movementType: '',
+  description: '',
+  date: undefined,
+}

@@ -57,33 +57,22 @@ export async function getProductById(productId: string) {
   }
 
 // GET ALL PRODUCTS
-export async function getAllProducts({ query, limit = 6, page, category }: GetAllProductsParams) {
-    try {
-      await connectToDatabase()
-  
-      const nameCondition = query ? { title: { $regex: query, $options: 'i' } } : {}
-      const categoryCondition = category ? await getCategoryByName(category) : null
-      const conditions = {
-        $and: [nameCondition, categoryCondition ? { category: categoryCondition._id } : {}],
-      }
-  
-      const skipAmount = (Number(page) - 1) * limit
-      const productsQuery = Product.find(conditions)
-        .sort({ createdAt: 'desc' })
-        .skip(skipAmount)
-        .limit(limit)
-  
-      const products = await populateProduct(productsQuery)
-      const productsCount = await Product.countDocuments(conditions)
-  
-      return {
-        data: JSON.parse(JSON.stringify(products)),
-        totalPages: Math.ceil(productsCount / limit),
-      }
-    } catch (error) {
-      handleError(error)
+export async function getAllProducts() {
+  try {
+    await connectToDatabase()
+
+    const productsQuery = Product.find().sort({ createdAt: 'desc' })
+
+    const products = await populateProduct(productsQuery)
+
+    return {
+      data: JSON.parse(JSON.stringify(products)),
     }
+  } catch (error) {
+    handleError(error)
   }
+}
+  
 // UPDATE
 export async function updateProduct({ userId, product, path }: UpdateProductParams) {
     try {

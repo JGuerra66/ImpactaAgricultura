@@ -63,7 +63,7 @@ import { createUnit, getAllUnits } from "@/lib/actions/unit.actions"
           ))}
   
           <AlertDialog>
-            <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Add new Unit</AlertDialogTrigger>
+            <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Agrega nueva unidad</AlertDialogTrigger>
             <AlertDialogContent className="bg-white">
               <AlertDialogHeader>
                 <AlertDialogTitle>Nueva Unidad</AlertDialogTitle>
