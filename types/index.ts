@@ -216,3 +216,72 @@ export type CreateActivityParams = {
 export type CreateContractorParams = {
   contractorName: string
 }
+
+
+import { Types } from 'mongoose';
+
+// ====== STOCK MOVEMENT HISTORY PARAMS
+export type CreateStockMovementHistoryParams = {
+  userId: string
+  stockMovementHistory: {
+    date: Date;
+    product: Types.ObjectId;
+    quantity: number;
+    typeOfMovement: string;
+    receipt?: string;
+    origin?: Types.ObjectId;
+    destiny?: Types.ObjectId;
+  }
+  path: string
+}
+
+export type UpdateStockMovementHistoryParams = {
+  userId: string
+  stockMovementHistory: {
+    _id: string;
+    date: Date;
+    product: Types.ObjectId;
+    quantity: number;
+    typeOfMovement: string;
+    receipt?: string;
+    origin?: Types.ObjectId;
+    destiny?: Types.ObjectId;
+  }
+  path: string
+}
+
+export type DeleteStockMovementHistoryParams = {
+  stockMovementHistoryId: string
+  path: string
+}
+
+export type GetAllStockMovementHistoriesParams = {
+  query: string
+  limit: number
+  page: number
+}
+
+export type StockMovementHistory = {
+  _id: string
+  date: Date;
+  product:  {
+    _id: string
+    name: string 
+  }
+  quantity: number;
+  typeOfMovement: string;
+  receipt?: string;
+  origin?:  {
+    _id: string
+    name: string 
+  }
+  destiny?:  {
+    _id: string
+    name: string 
+  }
+  creator: {
+    _id: string
+    firstName: string
+    lastName: string
+  }
+}
