@@ -73,7 +73,7 @@ export const columns: ColumnDef<Product>[] = [
   
       return (
         <>
-                  <DropdownMenu>
+            <DropdownMenu>
             <DropdownMenuTrigger>...</DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem>
