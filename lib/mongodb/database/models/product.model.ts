@@ -4,7 +4,7 @@ export interface IProduct extends Document {
     _id: string;
     name: string;
     description: string;
-    imageUrl: string;
+    imageUrl?: string;
     price: number;
     unit: {_id: string, name: string};
     category: {_id: string, name: string};

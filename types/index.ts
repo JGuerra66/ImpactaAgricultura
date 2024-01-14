@@ -21,7 +21,7 @@ export type CreateUserParams = {
     product: {
       name: string;
       description: string;
-      imageUrl: string;
+      imageUrl?: string;
       price: number;
       unitId: string;
       categoryId: string;
@@ -35,7 +35,7 @@ export type CreateUserParams = {
       _id: string;
       name: string;
       description: string;
-      imageUrl: string;
+      imageUrl?: string;
       price: number;
       unitId: string;
       categoryId: string;
@@ -59,7 +59,7 @@ export type CreateUserParams = {
     _id: string
     name: string;
     description: string;
-    imageUrl: string;
+    imageUrl?: string;
     price: number;
     creator: {
       _id: string
@@ -105,3 +105,114 @@ export type CreateUserParams = {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
   }
+
+// ====== DEPOSIT PARAMS
+export type CreateDepositParams = {
+  userId: string
+  deposit: {
+    name: string;
+    depositLocation: string;
+    photo: string;
+    type: string;
+  }
+  path: string
+}
+
+export type UpdateDepositParams = {
+  userId: string
+  deposit: {
+    _id: string;
+    name: string;
+    depositLocation: string;
+    photo: string;
+    type: string;
+  }
+  path: string
+}
+
+export type DeleteDepositParams = {
+  depositId: string
+  path: string
+}
+
+export type GetAllDepositsParams = {
+  query: string
+  limit: number
+  page: number
+}
+
+export type Deposit = {
+  _id: string
+  name: string;
+  depositLocation: string;
+  photo: string;
+  type: string;
+  creator: {
+    _id: string
+    firstName: string
+    lastName: string
+  }
+}
+
+// ====== LOT PARAMS
+export type CreateLotParams = {
+  userId: string
+  lot: {
+    name: string;
+    deposit: {
+      _id: string;
+      name: string;
+    };
+    kmzFile?: string; // kmzFile is optional
+  }
+  path: string
+}
+
+export type UpdateLotParams = {
+  userId: string
+  lot: {
+    _id: string;
+    name: string;
+    deposit: {
+      _id: string;
+      name: string;
+    };
+    kmzFile?: string; // kmzFile is optional
+  }
+  path: string
+}
+
+export type DeleteLotParams = {
+  lotId: string
+  path: string
+}
+
+export type GetAllLotsParams = {
+  query: string
+  limit: number
+  page: number
+}
+
+export type Lot = {
+  _id: string
+  name: string;
+  deposit: {
+    _id: string;
+    name: string;
+  };
+  kmzFile?: string; // kmzFile is optional
+  creator: {
+    _id: string
+    firstName: string
+    lastName: string
+  }
+}
+// ====== ACTIVITY PARAMS
+export type CreateActivityParams = {
+  activityName: string
+}
+
+// ====== CONTRACTOR PARAMS
+export type CreateContractorParams = {
+  contractorName: string
+}

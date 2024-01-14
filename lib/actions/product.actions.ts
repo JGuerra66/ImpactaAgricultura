@@ -90,7 +90,7 @@ export async function updateProduct({ userId, product, path }: UpdateProductPara
       await connectToDatabase()
   
       const productToUpdate = await Product.findById(product._id)
-      if (!productToUpdate || productToUpdate.organizer.toHexString() !== userId) {
+      if (!productToUpdate || productToUpdate.creator.toHexString() !== userId) {
         throw new Error('Unauthorized or product not found')
       }
   

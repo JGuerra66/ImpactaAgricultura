@@ -86,7 +86,7 @@ const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
       
               if(updatedProduct) {
                 form.reset();
-                router.push(`/`)
+                router.push(`/products`)
               }
             } catch (error) {
               console.log(error);
@@ -110,18 +110,24 @@ const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
             )}
             />
 
-        <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
                 <FormItem className="w-full">
-                <FormControl>
-                    <Input placeholder="Precio en u$d" {...field} className="input-field"/>
-                </FormControl>
-                <FormMessage />
+                  <FormControl>
+                    <Input 
+                      type="number" 
+                      placeholder="Precio en u$d" 
+                      value={field.value} 
+                      onChange={e => field.onChange(e.target.valueAsNumber)} 
+                      className="input-field"
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
-            )}
-        />
+              )}
+            />
         <FormField
             control={form.control}
             name="categoryId"
