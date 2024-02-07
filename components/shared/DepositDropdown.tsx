@@ -21,7 +21,7 @@ import {
   
     useEffect(() => {
       const getDeposits = async () => {
-        const depositList = await getAllDeposits();
+        const depositList = await getAllDeposits(orgId);
   
         depositList && setDeposits(depositList as IDeposit[])
       }
