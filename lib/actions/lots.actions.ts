@@ -65,9 +65,7 @@ export async function updateLot({ userId, lot, path }: UpdateLotParams) {
       await connectToDatabase()
   
       const lotToUpdate = await Lot.findById(lot._id)
-      if (!lotToUpdate || lotToUpdate.creator.toHexString() !== userId) {
-        throw new Error('Unauthorized or lot not found')
-      }
+      
   
       const updatedLot = await Lot.findByIdAndUpdate(
         lot._id,

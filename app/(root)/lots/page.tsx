@@ -4,29 +4,30 @@ import { columns } from "./columns";
 import { Lot } from "@/types"; 
 import { DataTable } from "./data-table"; 
 import { getAllLots } from "../../../lib/actions/lots.actions"; 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function DemoPage() {
-  const [data, setData] = React.useState<Lot[]>([]);
+  
   const { user } = useUser();
   const { organization } = useOrganization();
   
   const userId = user?.id;
   const orgId = organization?.id;
 
-  React.useEffect(() => {
-    if (orgId) { 
-      getAllLots(orgId).then(response => {
-        if (response) {
-          setData(response.data)
-        } else {
-          console.error('getAllLots did not return a response')
-        }
-      }).catch(console.error)
-    }
-  }, [orgId]) 
+  const [data, setData] = useState<Lot[]>([]);
+
+  useEffect(() => {
+    const fetchLots = async () => {
+      if (orgId) {
+        const lots = await getAllLots(orgId);
+        setData(lots);
+      }
+    };
+
+    fetchLots();
+  }, [orgId]);
 
   return (
     <div className="container mx-auto py-10">
