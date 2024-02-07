@@ -13,20 +13,12 @@ export const headerLinks = [
       route: '/lots'
     },
     
-    {
-      label: 'Stock',
-      route: '/stock',
-    },
+   {
+      label: 'Depositos',
+      route: '/deposits'
+   }
 
-    {
-      label: 'Ordenes de trabajo', 
-      route: '/workorders'
-    },
-
-    {
-      label: 'Planeamiento Futuro',
-      route: '/futureplanning'
-    },
+   
   ]
 
 export const productDefaultValues = {

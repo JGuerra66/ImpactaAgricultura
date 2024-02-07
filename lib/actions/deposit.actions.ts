@@ -38,11 +38,11 @@ export async function getDepositById(depositId: string) {
 }
 
 // GET ALL DEPOSITS
-export async function getAllDeposits() {
+export async function getAllDeposits(orgId: string) {
   try {
     await connectToDatabase()
 
-    const deposits = await Deposit.find()
+    const deposits = await Deposit.find({ orgId })
 
     return JSON.parse(JSON.stringify(deposits))
   } catch (error) {

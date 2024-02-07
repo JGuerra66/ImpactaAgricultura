@@ -18,7 +18,7 @@ export default function DemoPage() {
 
   React.useEffect(() => {
     if (orgId) { 
-      getAllLots().then(response => {
+      getAllLots(orgId).then(response => {
         if (response) {
           setData(response.data)
         } else {

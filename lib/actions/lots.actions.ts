@@ -46,11 +46,11 @@ export async function getLotById(lotId: string) {
 }
 
 // GET ALL LOTS
-export async function getAllLots() {
+export async function getAllLots(orgId: string) {
     try {
       await connectToDatabase()
   
-      const lotsQuery = Lot.find().sort({ createdAt: 'desc' })
+      const lotsQuery = Lot.find({ orgId })
       const lots = await populateLot(lotsQuery)
   
       return JSON.parse(JSON.stringify(lots))
