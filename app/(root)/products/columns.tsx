@@ -82,7 +82,11 @@ export const columns: ColumnDef<Product>[] = [
                 </Link>Actualizar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><ProductDeleteConfirmation productId={product._id}/>Borrar</DropdownMenuItem>
+              <DropdownMenuItem>
+                <div onClick={(e) => e.stopPropagation()}>
+                  <ProductDeleteConfirmation productId={product._id}/>Borrar
+                </div>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">

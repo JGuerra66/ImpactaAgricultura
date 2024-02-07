@@ -1,8 +1,8 @@
-'use client'
-
 import { useTransition } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
+
+
 
 import {
   AlertDialog,
@@ -20,13 +20,22 @@ import { deleteProduct } from '@/lib/actions/product.actions'
 
 export const ProductDeleteConfirmation = ({ productId }: { productId: string }) => {
   const pathname = usePathname()
+  const router = useRouter();
   let [isPending, startTransition] = useTransition()
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      await deleteProduct({ productId, path: pathname })
+      router.refresh()
+    })
+  }
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
-        <Image src="/assets/icons/delete.svg" alt="edit" width={20} height={20} />
-        
+      <AlertDialogTrigger onClick={handleDelete}>
+        <button>
+          <Image src="/assets/icons/delete.svg" alt="edit" width={20} height={20} />
+        </button>
       </AlertDialogTrigger>
 
       <AlertDialogContent className="bg-white">
@@ -40,12 +49,7 @@ export const ProductDeleteConfirmation = ({ productId }: { productId: string }) 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
 
-          <AlertDialogAction
-            onClick={() =>
-              startTransition(async () => {
-                await deleteProduct({ productId, path: pathname })
-              })
-            }>
+          <AlertDialogAction>
             {isPending ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
