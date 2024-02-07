@@ -15,77 +15,9 @@ export type CreateUserParams = {
     photo: string
   }
   
-  // ====== PRODUCT PARAMS
-  export type CreateProductParams = {
-    userId: string
-    product: {
-      name: string;
-      description: string;
-      imageUrl?: string;
-      price: number;
-      unitId: string;
-      categoryId: string;
-    }
-    path: string
-  }
+ 
   
-  export type UpdateProductParams = {
-    userId: string
-    product: {
-      _id: string;
-      name: string;
-      description: string;
-      imageUrl?: string;
-      price: number;
-      unitId: string;
-      categoryId: string;
-    }
-    path: string
-  }
-  
-  export type DeleteProductParams = {
-    productId: string
-    path: string
-  }
-  
-  export type GetAllProductsParams = {
-    query: string
-    category: string
-    limit: number
-    page: number
-  }
-  
-  export type Product = {
-    _id: string
-    name: string;
-    description: string;
-    imageUrl?: string;
-    price: number;
-    creator: {
-      _id: string
-      firstName: string
-      lastName: string
-    }
-    category: {
-      _id: string
-      name: string
-    }
-    unit: {
-      _id: string
-      name: string
-    }
-  }
-  
-  // ====== CATEGORY PARAMS
-  export type CreateCategoryParams = {
-    categoryName: string
-  }
-
-  // ====== UNIT PARAMS
-  export type CreateUnitParams = {
-    unitName: string
-  }
-  
+ 
   
  
   
@@ -105,54 +37,6 @@ export type CreateUserParams = {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
   }
-
-// ====== DEPOSIT PARAMS
-export type CreateDepositParams = {
-  userId: string
-  deposit: {
-    name: string;
-    depositLocation: string;
-    photo?: string;
-    type: string;
-  }
-  path: string
-}
-
-export type UpdateDepositParams = {
-  userId: string
-  deposit: {
-    _id: string;
-    name: string;
-    depositLocation: string;
-    photo?: string;
-    type: string;
-  }
-  path: string
-}
-
-export type DeleteDepositParams = {
-  depositId: string
-  path: string
-}
-
-export type GetAllDepositsParams = {
-  query: string
-  limit: number
-  page: number
-}
-
-export type Deposit = {
-  _id: string
-  name: string;
-  depositLocation: string;
-  photo: string;
-  type: string;
-  creator: {
-    _id: string
-    firstName: string
-    lastName: string
-  }
-}
 
 // ====== LOT PARAMS
 export type CreateLotParams = {
@@ -284,4 +168,115 @@ export type StockMovementHistory = {
     firstName: string
     lastName: string
   }
+}
+
+// ====== DEPOSIT PARAMS
+export type CreateDepositParams = {
+  userId: string
+  orgId: string
+  deposit: {
+    name: string;
+    depositLocation: string;
+    type: string;
+  }
+  path: string
+}
+
+export type UpdateDepositParams = {
+  userId: string
+  deposit: {
+    _id: string;
+    name: string;
+    depositLocation: string;
+    type: string;
+  }
+  path: string
+}
+
+export type DeleteDepositParams = {
+  depositId: string
+  path: string
+}
+
+export type GetAllDepositsParams = {
+  query: string
+  limit: number
+  page: number
+}
+
+export type Deposit = {
+  _id: string
+  name: string;
+  depositLocation: string;
+  type: string;
+  userId:string;
+  orgId: string;
+  
+}
+
+ // ====== PRODUCT PARAMS
+ export type CreateProductParams = {
+  userId: string
+  orgId: string
+  product: {
+    name: string;
+    price: number;
+    unitId: string;
+    categoryId: string;
+  }
+  path: string
+}
+
+export type UpdateProductParams = {
+  userId: string
+  orgId: string
+  product: {
+    _id: string;
+    name: string;
+    price: number;
+    unitId: string;
+    categoryId: string;
+  }
+  path: string
+}
+
+export type DeleteProductParams = {
+  productId: string
+  path: string
+}
+
+export type GetAllProductsParams = {
+  query: string
+  category: string
+  limit: number
+  page: number
+}
+
+export type Product = {
+  _id: string
+  name: string;
+  price: number;
+  
+  category: {
+    _id: string
+    name: string
+  }
+  unit: {
+    _id: string
+    name: string
+  }
+}
+
+ // ====== CATEGORY PARAMS
+ export type CreateCategoryParams = {
+  categoryName: string
+  userId: string
+  orgId: string
+}
+
+// ====== UNIT PARAMS
+export type CreateUnitParams = {
+  unitName: string
+  userId: string
+  orgId: string
 }

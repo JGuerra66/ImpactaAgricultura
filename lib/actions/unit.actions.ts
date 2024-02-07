@@ -5,11 +5,11 @@ import { handleError } from "../utils"
 import { connectToDatabase } from "../mongodb/database"
 import ProductUnit from "../mongodb/database/models/productUnit.model"
 
-export const createUnit = async ({unitName}:CreateUnitParams) => {
+export const createUnit = async ({unitName , userId, orgId}:CreateUnitParams) => {
     try {
         await connectToDatabase()
 
-        const newUnit = await ProductUnit.create({name: unitName});
+        const newUnit = await ProductUnit.create({name: unitName, userId, orgId});
         
         return JSON.parse(JSON.stringify(newUnit));
     } catch (error) {

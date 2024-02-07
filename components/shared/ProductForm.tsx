@@ -29,13 +29,14 @@ import { IProduct } from '@/lib/mongodb/database/models/product.model';
 
 type ProductFormProps = {
     userId: string;
+    orgId: string;
     type: 'Create' | 'Update';
     product?: IProduct;
     productId?: string;
 
 }
 
-const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
+const ProductForm = ({userId, type, product, productId, orgId}: ProductFormProps) => {
         //const [files, setFiles] = React.useState<File[]>([]);
         const initialValues = product && type==='Update' 
         ? product:productDefaultValues;
@@ -57,6 +58,7 @@ const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
                   ...values,
                 },
                 userId,
+                orgId,
                 path:'/'
               });
 
@@ -80,6 +82,7 @@ const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
             try {
               const updatedProduct = await updateProduct({
                 userId,
+                orgId,
                 product: { ...values, _id: productId },
                 path: `/`
               })
@@ -134,7 +137,7 @@ const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Dropdown onChangeHandler={field.onChange} value={field.value} />
+                  <Dropdown onChangeHandler={field.onChange} value={field.value} userId={userId} orgId={orgId}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -146,27 +149,13 @@ const ProductForm = ({userId, type, product, productId}: ProductFormProps) => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <UnitDropdown onChangeHandler={field.onChange} value={field.value} />
+                  <UnitDropdown onChangeHandler={field.onChange} value={field.value} userId={userId} orgId={orgId}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
       </div>
-      <div className="flex flex-col gap-5 md:flex-row">
-          <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl className="h-72">
-                    <Textarea placeholder="Descripcion" {...field} className="textarea rounded-2xl" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-        </div>
         
         <Button type="submit">Submit</Button>
       </form>

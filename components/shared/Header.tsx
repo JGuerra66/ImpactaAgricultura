@@ -1,5 +1,4 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
-import Image from "next/image"
+import { OrganizationSwitcher, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import NavItems from "./NavItems"
@@ -20,9 +19,11 @@ const Header = () => {
 
           </nav>
         </SignedIn>
-
+        <div className="flex w-32 justify-end gap-3">
+        </div>
         <div className="flex w-32 justify-end gap-3">
           <SignedIn>
+          <OrganizationSwitcher />
           <UserButton afterSignOutUrl="/" />
             <MobileNav/>
           </SignedIn>

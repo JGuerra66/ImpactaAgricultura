@@ -24,15 +24,20 @@ import {
   type DropdownProps = {
     value?: string
     onChangeHandler?: () => void
+    userId: string
+    orgId: string
   }
   
-  const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
+  const Dropdown = ({ value, onChangeHandler, userId, orgId }: DropdownProps) => {
     const [categories, setCategories] = useState<IProductCategory[]>([])
     const [newCategory, setNewCategory] = useState('');
   
     const handleAddCategory = () => {
       createCategory({
-        categoryName: newCategory.trim()
+        categoryName: newCategory.trim(),
+        userId,
+        orgId
+
       })
         .then((category) => {
           setCategories((prevState) => [...prevState, category])

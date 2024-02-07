@@ -25,15 +25,19 @@ import { createUnit, getAllUnits } from "@/lib/actions/unit.actions"
   type UnitDropdownProps = {
     value?: string
     onChangeHandler?: () => void
+    userId: string
+    orgId: string
   }
   
-  const UnitDropdown = ({ value, onChangeHandler }: UnitDropdownProps) => {
+  const UnitDropdown = ({ value, onChangeHandler , userId,orgId}: UnitDropdownProps) => {
     const [Units, setUnits] = useState<IProductUnit[]>([])
     const [newUnit, setNewUnit] = useState('');
   
     const handleAddUnit = () => {
       createUnit({
-        unitName: newUnit.trim()
+        unitName: newUnit.trim(),
+        userId,
+        orgId
       })
         .then((unit) => {
           setUnits((prevState) => [...prevState, unit])

@@ -8,7 +8,7 @@ import Deposit from "../mongodb/database/models/deposit.model"
 import { revalidatePath } from "next/cache"
 
 // CREATE
-export const createDeposit = async ({deposit, userId, path}: CreateDepositParams) => {
+export const createDeposit = async ({deposit, userId, orgId, path}: CreateDepositParams) => {
     try {
         await connectToDatabase();
 

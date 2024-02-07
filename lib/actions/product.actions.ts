@@ -3,26 +3,21 @@
 import { CreateProductParams, DeleteProductParams, GetAllProductsParams, UpdateProductParams } from "@/types"
 import { handleError } from "../utils"
 import { connectToDatabase } from "../mongodb/database"
-import User from "../mongodb/database/models/user.model"
 import Product from "../mongodb/database/models/product.model"
 import { revalidatePath } from "next/cache"
 import ProductCategory from "../mongodb/database/models/productCategory.model"
+import ProductUnit from "../mongodb/database/models/productUnit.model"
 // CREATE
-export const createProduct = async ({product, userId, path}: CreateProductParams) => {
+export const createProduct = async ({product, userId, path, orgId}: CreateProductParams) => {
     try {
         await connectToDatabase();
-
-        const creator = await User.findById(userId);
-
-        if (!creator) {
-            throw new Error('User not found')
-        }
 
         const newProduct = await Product.create({
             ...product, 
             category: product.categoryId, 
             unit: product.unitId, 
-            creator: userId});
+            userId,
+            orgId});
 
         return JSON.parse(JSON.stringify(newProduct));
     } catch (error) {
@@ -37,7 +32,7 @@ const getCategoryByName = async (name: string) => {
 
 const populateProduct = (query: any) => {
     return query
-      .populate({ path: 'creator', model: User, select: '_id firstName lastName' })
+      .populate({ path: 'unit', model: ProductUnit, select: '_id name' })
       .populate({ path: 'category', model: ProductCategory, select: '_id name' })
   }
 
@@ -57,11 +52,11 @@ export async function getProductById(productId: string) {
   }
 
 // GET ALL PRODUCTS
-export async function getAllProducts() {
+export async function getAllProducts(orgId: string) {
   try {
     await connectToDatabase()
 
-    const productsQuery = Product.find().sort({ createdAt: 'desc' })
+    const productsQuery = Product.find({ orgId }) // use orgId in your query
 
     const products = await populateProduct(productsQuery)
 
@@ -74,27 +69,22 @@ export async function getAllProducts() {
 }
   
 // UPDATE
-export async function updateProduct({ userId, product, path }: UpdateProductParams) {
-    try {
-      await connectToDatabase()
-  
-      const productToUpdate = await Product.findById(product._id)
-      if (!productToUpdate || productToUpdate.creator.toHexString() !== userId) {
-        throw new Error('Unauthorized or product not found')
-      }
-  
-      const updatedProduct = await Product.findByIdAndUpdate(
-        product._id,
-        { ...product, category: product.categoryId, unit: product.unitId },
-        { new: true }
-      )
-      revalidatePath(path)
-  
-      return JSON.parse(JSON.stringify(updatedProduct))
-    } catch (error) {
-      handleError(error)
-    }
+export async function updateProduct({ product, path }: UpdateProductParams) {
+  try {
+    await connectToDatabase()
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      product._id,
+      { ...product, category: product.categoryId, unit: product.unitId },
+      { new: true }
+    )
+    revalidatePath(path)
+
+    return JSON.parse(JSON.stringify(updatedProduct))
+  } catch (error) {
+    handleError(error)
   }
+}
   
   // DELETE
   export async function deleteProduct({ productId, path }: DeleteProductParams) {

@@ -4,17 +4,19 @@ export interface IDeposit {
     _id: string;
     name: string;
     depositLocation: string;
-    photo: string;
     type: string;
-    creator: {_id: string, firstName: string, lastName: string};
+    userId: string;
+    orgId: string;
+    
 }
 
 const DepositSchema = new Schema({
     name: {type: String, required: true},
     depositLocation: {type: String, required: false},
-    photo: {type: String, required: false},
-    type: {type: String, required: true, enum: ['Establecimiento', 'Acopio']},
-    creator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    type: {type: String, required: true},
+    userId: {type: String, required: true},
+    orgId: {type: String, required: true},
+    
 });
 
 const Deposit = models.Deposit || model('Deposit', DepositSchema);
