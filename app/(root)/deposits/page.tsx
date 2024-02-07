@@ -18,7 +18,7 @@ export default function DemoPage() {
 
   React.useEffect(() => {
     if (orgId) { 
-      getAllDeposits().then(response => {
+      getAllDeposits(orgId).then(response => {
         if (response) {
           setData(response.data)
         } else {
