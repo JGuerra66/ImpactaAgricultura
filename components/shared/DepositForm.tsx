@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -6,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,23 +15,22 @@ import {
 import { Input } from "@/components/ui/input"
 import { depositFormSchema } from '@/lib/validator';
 import { depositDefaultValues } from '@/constants';
-import Dropdown from './Dropdown';
-import { Textarea } from '../ui/textarea';
-import { useRouter } from 'next/router';
 import { createDeposit, updateDeposit } from '@/lib/actions/deposit.actions';
 import { IDeposit } from '@/lib/mongodb/database/models/deposit.model';
+import  TypeSelect  from './TypeSelect'
 
 type DepositFormProps = {
     userId: string;
+    orgId: string;
     type: 'Create' | 'Update';
     deposit?: IDeposit;
     depositId?: string;
 }
 
-const DepositForm = ({userId, type, deposit, depositId}: DepositFormProps) => {
+const DepositForm = ({userId, type, deposit, depositId,orgId}: DepositFormProps) => {
         const initialValues = deposit && type==='Update' 
         ? deposit:depositDefaultValues;
-        const router = useRouter();
+        
 
         const form = useForm<z.infer<typeof depositFormSchema>>({
           resolver: zodResolver(depositFormSchema),
@@ -46,12 +45,13 @@ const DepositForm = ({userId, type, deposit, depositId}: DepositFormProps) => {
                   ...values,
                 },
                 userId,
+                orgId,
                 path:'/'
               });
 
               if (newDeposit){
                 form.reset();
-                router.push('/deposits');
+                
               }
             } catch (error) {
               console.log(error);
@@ -62,20 +62,19 @@ const DepositForm = ({userId, type, deposit, depositId}: DepositFormProps) => {
 
           if(type === 'Update') {
             if(!depositId) {
-              router.back()
+              
               return;
             }
       
             try {
               const updatedDeposit = await updateDeposit({
-                userId,
                 deposit: { ...values, _id: depositId },
                 path: `/`
               })
       
               if(updatedDeposit) {
                 form.reset();
-                router.push(`/deposits`)
+                
               }
             } catch (error) {
               console.log(error);
@@ -115,20 +114,20 @@ const DepositForm = ({userId, type, deposit, depositId}: DepositFormProps) => {
                 </FormItem>
               )}
             />
+        
         <FormField
             control={form.control}
             name="type"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Dropdown onChangeHandler={field.onChange} value={field.value} />
+                  <TypeSelect onChangeHandler={field.onChange} value={field.value}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
       </div>
-      
         
         <Button type="submit">Submit</Button>
       </form>

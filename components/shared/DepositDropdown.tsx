@@ -12,10 +12,11 @@ import {
   
   type DepositDropdownProps = {
     value?: string
+    orgId: string
     onChangeHandler?: () => void
   }
   
-  const DepositDropdown = ({ value, onChangeHandler }: DepositDropdownProps) => {
+  const DepositDropdown = ({ value, onChangeHandler, orgId }: DepositDropdownProps) => {
     const [deposits, setDeposits] = useState<IDeposit[]>([])
   
     useEffect(() => {

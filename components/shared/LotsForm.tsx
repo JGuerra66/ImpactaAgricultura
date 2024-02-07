@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input"
 import { lotFormSchema } from '@/lib/validator';
 import { lotDefaultValues } from '@/constants';
 import DepositDropdown from './DepositDropdown';
-import { Textarea } from '../ui/textarea';
 import { useRouter } from 'next/navigation';
 import { createLot, updateLot } from '@/lib/actions/lots.actions';
 import { ILot } from '@/lib/mongodb/database/models/lot.model';
@@ -25,12 +24,13 @@ import { FileUploader } from './FileUploader';
 
 type LotFormProps = {
     userId: string;
+    orgId: string;
     type: 'Create' | 'Update';
     lot?: ILot;
     lotId?: string;
 }
 
-const LotForm = ({userId, type, lot, lotId}: LotFormProps) => {
+const LotForm = ({userId, type, lot, lotId,orgId}: LotFormProps) => {
         const initialValues = lot && type==='Update' 
         ? lot:lotDefaultValues;
         const router = useRouter();
@@ -49,6 +49,7 @@ const LotForm = ({userId, type, lot, lotId}: LotFormProps) => {
                   ...values,
                 },
                 userId,
+                orgId,
                 path:'/'
               });
 
@@ -106,7 +107,7 @@ const LotForm = ({userId, type, lot, lotId}: LotFormProps) => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                <DepositDropdown onChangeHandler={field.onChange} value={field.value ? field.value.name : ''} />
+                <DepositDropdown onChangeHandler={field.onChange} value={field.value} orgId={orgId}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>

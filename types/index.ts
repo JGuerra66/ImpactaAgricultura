@@ -41,12 +41,10 @@ export type CreateUserParams = {
 // ====== LOT PARAMS
 export type CreateLotParams = {
   userId: string
+  orgId: string
   lot: {
     name: string;
-    deposit: {
-      _id: string;
-      name: string;
-    };
+    deposit: string; // deposit is now a string
     kmzFile?: string; // kmzFile is optional
   }
   path: string
@@ -57,10 +55,7 @@ export type UpdateLotParams = {
   lot: {
     _id: string;
     name: string;
-    deposit: {
-      _id: string;
-      name: string;
-    };
+    deposit: string; // deposit is now a string
     kmzFile?: string; // kmzFile is optional
   }
   path: string
@@ -80,16 +75,10 @@ export type GetAllLotsParams = {
 export type Lot = {
   _id: string
   name: string;
-  deposit: {
-    _id: string;
-    name: string;
-  };
+  deposit: string; // deposit is now a string
   kmzFile?: string; // kmzFile is optional
-  creator: {
-    _id: string
-    firstName: string
-    lastName: string
-  }
+  userId: string;
+  orgId: string;
 }
 // ====== ACTIVITY PARAMS
 export type CreateActivityParams = {
@@ -183,7 +172,6 @@ export type CreateDepositParams = {
 }
 
 export type UpdateDepositParams = {
-  userId: string
   deposit: {
     _id: string;
     name: string;

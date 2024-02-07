@@ -3,16 +3,18 @@ import { Schema, model, models } from "mongoose";
 export interface ILot extends Document {
     _id: string;
     name: string;
-    deposit: {_id: string, name: string};
+    deposit: string;
     kmzFile: string;
-    creator: {_id: string, firstName: string, lastName: string};
+    userId: string;
+    orgId: string;
 }
 
 const LotSchema = new Schema({
     name: {type: String, required: true},
     deposit: {type: Schema.Types.ObjectId, ref: 'Deposit', required: true},
     kmzFile: {type: String, required: false},
-    creator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    userId: {type : String, required: true},
+    orgId: {type: String, required: true}
 });
 
 const Lot = models.Lot || model('Lot', LotSchema);

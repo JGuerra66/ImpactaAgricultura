@@ -40,11 +40,8 @@ export const productDefaultValues = {
 
 export const lotDefaultValues = {
   name: '',
-  description: '',
-  photo: '',
-  quantity: 0,
-  unit: '',
-  category: '',
+  deposit: '',
+  kmzFile: '',
 }
 
 export const depositDefaultValues = {

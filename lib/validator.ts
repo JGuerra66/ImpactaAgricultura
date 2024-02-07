@@ -11,12 +11,8 @@ export const productFormSchema = z.object({
 
   export const lotFormSchema = z.object({
     name: z.string().min(3).max(255),
-    deposit: z.object({
-        _id: z.string(),
-        name: z.string(),
-    }),
+    deposit: z.string(),
     kmzFile: z.string().optional(),
-
   });
 
   export const depositFormSchema = z.object({

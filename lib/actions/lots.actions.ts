@@ -6,21 +6,18 @@ import { connectToDatabase } from "../mongodb/database"
 import User from "../mongodb/database/models/user.model"
 import Lot from "../mongodb/database/models/lot.model"
 import { revalidatePath } from "next/cache"
+import Deposit from "../mongodb/database/models/deposit.model"
 
 // CREATE
-export const createLot = async ({lot, userId, path}: CreateLotParams) => {
+export const createLot = async ({lot, userId, path, orgId}: CreateLotParams) => {
     try {
         await connectToDatabase();
 
-        const creator = await User.findById(userId);
-
-        if (!creator) {
-            throw new Error('User not found')
-        }
 
         const newLot = await Lot.create({
             ...lot, 
-            creator: userId});
+            userId,
+            orgId});
 
         return JSON.parse(JSON.stringify(newLot));
     } catch (error) {
@@ -30,7 +27,7 @@ export const createLot = async ({lot, userId, path}: CreateLotParams) => {
 
 const populateLot = (query: any) => {
     return query
-      .populate({ path: 'creator', model: User, select: '_id firstName lastName' })
+      .populate({ path: 'deposit', model: Deposit, select: '_id name' })
 }
 
 // GET ONE LOT BY ID
