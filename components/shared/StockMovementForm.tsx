@@ -55,7 +55,7 @@ const StockMovementForm = ({userId, type, stockMovement, stockMovementId, orgId}
 
               if (newStockMovement){
                 form.reset();
-                router.push('/stockMovements');
+                router.push('/stockhistory');
               }
             } catch (error) {
               console.log(error);
@@ -82,7 +82,7 @@ const StockMovementForm = ({userId, type, stockMovement, stockMovementId, orgId}
       
               if(updatedStockMovement) {
                 form.reset();
-                router.push(`/stockMovements`)
+                router.push(`/stockhistory`)
               }
             } catch (error) {
               console.log(error);
