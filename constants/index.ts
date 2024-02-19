@@ -43,10 +43,20 @@ export const depositDefaultValues = {
   description: '',
 }
 
-export const stockMovementDefaultValues = {
+export const initStockDefaultValues = {
+  product: '',
   quantity: 0,
-  unit: '',
+  deposit: '',
   movementType: '',
-  description: '',
-  date: new Date().toISOString(),
+  receipt: '',
+  concept: '',
+}
+
+export const stockMovementDefaultValues = {
+  product: '',
+  quantity: 0,
+  deposit: '',
+  movementType: '',
+  receipt: '',
+  concept: '',
 }

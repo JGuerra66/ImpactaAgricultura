@@ -37,3 +37,21 @@ export const productFormSchema = z.object({
     description: z.string().optional(),
     date: z.string().optional(),
   });
+
+  export const initStockFormSchema = z.object({
+    product: z.string(),
+    quantity: z.number().min(0),
+    deposit: z.string(),
+    movementType: z.string(),
+    receipt: z.string().optional(),
+    concept: z.string().optional(),
+  });
+
+  export const stockMovementFormSchema = z.object({
+    productId: z.string(),
+    quantity: z.number(),
+    depositId: z.string(),
+    movementType: z.string(),
+    receipt: z.string().optional(),
+    concept: z.string().optional(),
+  });

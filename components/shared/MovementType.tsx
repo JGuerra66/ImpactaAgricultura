@@ -1,5 +1,4 @@
 import * as React from "react"
-import { useState } from "react"
  
 import {
   Select,
@@ -10,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Move } from "lucide-react"
 
 type TypeSelectProps = {
     value?: string
@@ -17,7 +17,7 @@ type TypeSelectProps = {
     
 }
  
-const TypeSelect = ({ value, onChangeHandler}:TypeSelectProps)=> {
+const MovementType = ({ value, onChangeHandler}:TypeSelectProps)=> {
   
     return (
         <Select onValueChange={onChangeHandler} defaultValue={value}>
@@ -25,11 +25,11 @@ const TypeSelect = ({ value, onChangeHandler}:TypeSelectProps)=> {
             <SelectValue placeholder="Tipo" />
           </SelectTrigger>
           <SelectContent>
-          <SelectItem value="establecimiento">Establecimiento</SelectItem>
-          <SelectItem value="acopio">Acopio</SelectItem>
+          <SelectItem value="entrada">Entrada</SelectItem>
+          <SelectItem value="salida">Salida</SelectItem>
       </SelectContent>
     </Select>
   )
 }
 
-export default TypeSelect
+export default MovementType

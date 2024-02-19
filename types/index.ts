@@ -268,3 +268,123 @@ export type CreateUnitParams = {
   userId: string
   orgId: string
 }
+
+// ====== STOCK MOVEMENT PARAMS
+export type CreateStockMovementParams = {
+  userId: string
+  orgId: string
+  stockMovement: {
+    productId: string;
+    quantity: number;
+    depositId: string;
+    movementType: string;
+    concept?: string;
+    receipt?: string;
+  }
+  path: string
+}
+
+export type UpdateStockMovementParams = {
+  userId: string
+  orgId: string
+  stockMovement: {
+    _id: string;
+    productId: string;
+    quantity: number;
+    depositId: string;
+    movementType: string;
+    concept?: string;
+    receipt?: string;
+
+  }
+  path: string
+}
+
+export type DeleteStockMovementParams = {
+  stockMovementId: string
+  path: string
+} 
+
+export type GetAllStockMovementsParams = {
+  query: string
+  limit: number
+  page: number
+}
+
+export type StockMovement = {
+  _id: string
+  productId: {
+    _id: string
+    name: string
+  }
+  quantity: number;
+  depositId: {
+    _id: string
+    name: string
+  }
+  movementType: string;
+  userId : string;
+  orgId: string;
+  concept: string;
+  receipt: string;
+}
+
+// ====== PRODUCT STOCK PARAMS
+export type CreateProductStockParams = {
+  userId: string
+  orgId: string
+  productStock: {
+    productId: string;
+    currentStock: number;
+    projectedStock: number;
+    depositId: string;
+    unit: string;
+  }
+  path: string
+}
+
+export type UpdateProductStockParams = {
+  userId: string
+  orgId: string
+  productStock: {
+    _id: string;
+    productId: string;
+    currentStock: number;
+    projectedStock: number;
+    depositId: string;
+    unit: string;
+  }
+  path: string
+}
+
+export type DeleteProductStockParams = {
+  productStockId: string
+  path: string
+}
+
+export type GetAllProductStocksParams = {
+  query: string
+  limit: number
+  page: number
+}
+
+export type ProductStock = {
+  _id: string
+  productId: {
+    _id: string
+    name: string
+  }
+  unit: {
+    _id: string
+    name: string
+  }
+  currentStock: number;
+  projectedStock: number;
+  depositId: {
+    _id: string
+    name: string
+  }
+  userId: string
+  orgId: string
+}
+

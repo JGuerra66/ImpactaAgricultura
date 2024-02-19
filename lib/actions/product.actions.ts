@@ -7,22 +7,41 @@ import Product from "../mongodb/database/models/product.model"
 import { revalidatePath } from "next/cache"
 import ProductCategory from "../mongodb/database/models/productCategory.model"
 import ProductUnit from "../mongodb/database/models/productUnit.model"
+import { getAllDeposits } from "./deposit.actions"
+import { createProductStock } from "./productStock.actions"
 // CREATE
 export const createProduct = async ({product, userId, path, orgId}: CreateProductParams) => {
-    try {
-        await connectToDatabase();
+  try {
+      await connectToDatabase();
 
-        const newProduct = await Product.create({
-            ...product, 
-            category: product.categoryId, 
-            unit: product.unitId, 
-            userId,
-            orgId});
+      const newProduct = await Product.create({
+          ...product, 
+          category: product.categoryId, 
+          unit: product.unitId, 
+          userId,
+          orgId});
 
-        return JSON.parse(JSON.stringify(newProduct));
-    } catch (error) {
-        handleError(error)
-    }
+      // Obtener todos los depósitos
+      const deposits = await getAllDeposits(orgId);
+
+      // Crear un ProductStock para cada depósito
+      for (const deposit of deposits) {
+          const productStock = {
+              productId: newProduct._id,
+              unit: newProduct.unit,
+              currentStock: 0,
+              projectedStock: 0,
+              depositId: deposit._id,
+              userId,
+              orgId
+          };
+          await createProductStock({userId, orgId, productStock, path});
+      }
+
+      return JSON.parse(JSON.stringify(newProduct));
+  } catch (error) {
+      handleError(error)
+  }
 }
 
 
@@ -56,7 +75,7 @@ export async function getAllProducts(orgId: string) {
   try {
     await connectToDatabase()
 
-    const productsQuery = Product.find({ orgId }) // use orgId in your query
+    const productsQuery = Product.find({ orgId }) 
 
     const products = await populateProduct(productsQuery)
 
