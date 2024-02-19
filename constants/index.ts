@@ -16,6 +16,16 @@ export const headerLinks = [
    {
       label: 'Depositos',
       route: '/deposits'
+   },
+
+   {
+      label: 'Movimientos de stock',
+      route: '/stockhistory'
+   },
+
+   {
+      label: 'Stock',
+      route: '/stock'
    }
 
    

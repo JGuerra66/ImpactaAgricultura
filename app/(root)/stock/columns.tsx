@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ArrowUpDown } from "lucide-react"
-import {Product, ProductStock} from "@/types"
+import {ProductStock} from "@/types"
 
 
 
@@ -20,7 +20,7 @@ import {Product, ProductStock} from "@/types"
 
 export const columns: ColumnDef<ProductStock>[] = [
   {
-    accessorKey: "product.name",
+    accessorKey: "productId.name",
     header: ({ column }) => {
       return (
         <Button
@@ -42,15 +42,15 @@ export const columns: ColumnDef<ProductStock>[] = [
     header: "Stock Proyectado",
   },
   {
-    accessorKey: "deposit.name",
+    accessorKey: "depositId.name",
     header: "Depósito",
   },
   {
-    accessorKey: "product.unit.name",
+    accessorKey: "product.unit",
     header: "Unidad",
   },
   {
-    accessorKey: "product.category.name",
+    accessorKey: "product.category",
     header: "Categoría",
   },
   

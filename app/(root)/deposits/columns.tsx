@@ -12,7 +12,7 @@ export const columns: ColumnDef<Deposit>[] = [
     header: "Nombre",
   },
   {
-    accessorKey: "location",
+    accessorKey: "depositLocation",
     header: "Ubicación",
   },
   {

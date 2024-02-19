@@ -6,7 +6,7 @@ import { StockMovement } from "@/types";
 
 export const columns: ColumnDef<StockMovement>[] = [
     {
-        accessorKey: 'productId',
+        accessorKey: 'productId.name',
         header: 'Producto',
     }
     ,
@@ -16,7 +16,7 @@ export const columns: ColumnDef<StockMovement>[] = [
     }
     ,
     {
-        accessorKey: 'depositId',
+        accessorKey: 'depositId.name',
         header: 'Depósito',
     }
     ,

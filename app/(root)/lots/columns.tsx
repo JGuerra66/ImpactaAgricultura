@@ -32,7 +32,7 @@ export const columns: ColumnDef<Lot>[] = [
   },
 
   {
-    accessorKey: "deposit", 
+    accessorKey: "deposit.name", 
     header: ({ column }) => {
       return (
         <Button

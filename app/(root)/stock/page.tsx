@@ -4,60 +4,37 @@ import { columns } from "./columns";
 import { Product, ProductStock } from "@/types";
 import { DataTable } from "./data-table";
 import { getAllProductStocks } from "@/lib/actions/productStock.actions";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-// Añade la función flattenData aquí
-function flattenData(data: ProductStock[]): any[] {
-  return data.map(item => ({
-    productName: item.productId?.name,
-    currentStock: item.currentStock,
-    projectedStock: item.projectedStock,
-    depositName: item.depositId?.name,
-    unitName: item.unit?.name,
-  }));
-}
-
-export default function DemoPage() {
-  const [data, setData] = React.useState<any[]>([]); // Actualiza el tipo de estado a any[]
-  const [isLoading, setIsLoading] = React.useState(true); // Add isLoading state
+export default function Page() {
   const { user } = useUser();
   const { organization } = useOrganization();
-  
-  const userId = user?.id;
   const orgId = organization?.id;
+  
+  const [data, setData] = useState<ProductStock[]>([]);
 
-  const fetchData = async () => {
-    if (orgId) { // Check if orgId is not undefined
-      try {
-        const response = await getAllProductStocks(orgId);
-        console.log(response)
-        if (response) {
-          const flattenedData = flattenData(response.data); // Aplana los datos antes de establecer el estado
-          setData(flattenedData)
-        } else {
-          console.error('getAllProductsStocks did not return a response')
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false); // Set isLoading to false after data is fetched
-      }
+  useEffect(() => {
+    getAllProductStocks(orgId? orgId : '')
+  .then(res => {
+    if (!res) {
+      throw new Error('No response received');
     }
-  }
-
-  React.useEffect(() => {
-    fetchData();
-  }, [orgId])
-
-  if (isLoading) { // If data is loading, render a loading message
-    return <div>Loading...</div>;
-  }
+    console.log(res.data);
+    return res.data;
+    
+  })
+  .then(data => setData(data))
+  .catch(err => console.error(err));
+  }, [organization]);
 
   return (
-    <div className="container mx-auto py-10">
+    <div>
       <DataTable columns={columns} data={data} />
+      <Link href="/stockhistory/create">
+        <Button variant="default" size="default">Crear Movimiento</Button>
+      </Link>
     </div>
   )
 }
