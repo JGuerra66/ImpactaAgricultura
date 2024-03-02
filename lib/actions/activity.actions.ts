@@ -5,11 +5,11 @@ import { handleError } from "../utils"
 import { connectToDatabase } from "../mongodb/database"
 import Activity from "../mongodb/database/models/activities.model"
 
-export const createActivity = async ({activityName}:CreateActivityParams) => {
+export const createActivity = async ({activityName, orgId, userId}:CreateActivityParams) => {
     try {
         await connectToDatabase()
 
-        const newActivity = await Activity.create({name: activityName});
+        const newActivity = await Activity.create({name: activityName, orgId, userId});
         
         return JSON.parse(JSON.stringify(newActivity));
     } catch (error) {

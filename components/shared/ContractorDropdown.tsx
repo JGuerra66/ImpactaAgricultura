@@ -25,15 +25,19 @@ import {
   type ContractorDropdownProps = {
     value?: string
     onChangeHandler?: () => void
+    userId: string
+    orgId: string
   }
   
-  const ContractorDropdown = ({ value, onChangeHandler }: ContractorDropdownProps) => {
+  const ContractorDropdown = ({ value, onChangeHandler ,orgId, userId}: ContractorDropdownProps) => {
     const [contractors, setContractors] = useState<IContractor[]>([])
     const [newContractor, setNewContractor] = useState('');
   
     const handleAddContractor = () => {
       createContractor({
-        contractorName: newContractor.trim()
+        contractorName: newContractor.trim(),
+        userId,
+        orgId
       })
         .then((contractor) => {
           setContractors((prevState) => [...prevState, contractor])

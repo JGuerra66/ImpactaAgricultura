@@ -13,7 +13,7 @@ import { getAllProducts } from "@/lib/actions/product.actions"
 type ProductDropdownProps = {
   value?: string
   orgId: string
-  onChangeHandler?: () => void
+  onChangeHandler: (value: string | null) => void;
 }
 
 const ProductDropdown = ({ value, onChangeHandler, orgId }: ProductDropdownProps) => {

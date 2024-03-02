@@ -5,11 +5,11 @@ import { handleError } from "../utils"
 import { connectToDatabase } from "../mongodb/database"
 import Contractor from "../mongodb/database/models/contractor.model"
 
-export const createContractor = async ({contractorName}:CreateContractorParams) => {
+export const createContractor = async ({contractorName, orgId, userId}:CreateContractorParams) => {
     try {
         await connectToDatabase()
 
-        const newContractor = await Contractor.create({name: contractorName});
+        const newContractor = await Contractor.create({name: contractorName,orgId, userId});
         
         return JSON.parse(JSON.stringify(newContractor));
     } catch (error) {

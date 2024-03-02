@@ -55,3 +55,37 @@ export const productFormSchema = z.object({
     receipt: z.string().optional(),
     concept: z.string().optional(),
   });
+
+  export const workOrderFormSchema = z.object({
+    name: z.string().min(3).max(255),
+    date: z.date(),
+    status: z.string(),
+    lot: z.string(),
+    deposit: z.string(),
+    labour: z.string(),
+    activity: z.string(),
+    contractor: z.string(),
+    hectareas: z.number(),
+    usedProducts: z.array(z.object({
+      product: z.object({
+        _id: z.string(),
+        name: z.string(),
+        category: z.string(),
+        unit: z.string(),
+      }),
+      quantity: z.number(),
+      total: z.number(),
+    })),
+    userId: z.string(),
+    orgId: z.string(),
+  });
+
+export const ProductLoaderSchema = z.object({
+  product: z.string(),
+  quantity: z.number(),
+  quantityType: z.string(),
+});
+export const LotLoaderSchema = z.object({
+  lot: z.string(),
+  hectareas: z.number(),
+});

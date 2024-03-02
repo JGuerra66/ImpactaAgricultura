@@ -80,15 +80,6 @@ export type Lot = {
   userId: string;
   orgId: string;
 }
-// ====== ACTIVITY PARAMS
-export type CreateActivityParams = {
-  activityName: string
-}
-
-// ====== CONTRACTOR PARAMS
-export type CreateContractorParams = {
-  contractorName: string
-}
 
 
 import { Types } from 'mongoose';
@@ -254,10 +245,31 @@ export type Product = {
     name: string
   }
 }
+// ====== ACTIVITY PARAMS
+export type CreateActivityParams = {
+  activityName: string
+  userId: string
+  orgId: string
+  
+}
+
+// ====== CONTRACTOR PARAMS
+export type CreateContractorParams = {
+  contractorName: string
+  userId: string
+  orgId: string
+}
 
  // ====== CATEGORY PARAMS
  export type CreateCategoryParams = {
   categoryName: string
+  userId: string
+  orgId: string
+}
+
+// ====== LABOUR PARAMS
+export type CreateLabourParams = {
+  labourName: string
   userId: string
   orgId: string
 }
@@ -388,3 +400,82 @@ export type ProductStock = {
   orgId: string
 }
 
+// ====== WORK ORDER PARAMS
+export type CreateWorkOrderParams = {
+  userId: string
+  orgId: string
+  workOrder: {
+    name: string;
+    date: Date;
+    status: string;
+    labour: string;
+    activity: string;
+    contractor: string;
+    lot: string;
+    deposit: string;
+    hectareas: number;
+  }
+  
+   usedProducts: {
+    product: Product;
+    quantity: number;
+  }[]
+
+  path: string
+}
+
+export type UpdateWorkOrderParams = {
+  userId: string
+  workOrder: {
+    _id: string;
+    name: string;
+    date: Date;
+    status: string;
+  }
+  labour: {
+    _id: string;
+    name: string;
+  }
+  activity: {
+    _id: string;
+    name: string;
+  }
+  lot: {
+    _id: string;
+    name: string;
+  }
+  usedProducts: {
+    product: {
+      _id: string;
+      name: string;
+      category: string;
+      unit: string;
+    }
+    quantity: number;
+    total: number;
+  }[]
+  deposit: {
+    _id: string;
+    name: string;
+  }
+  path: string
+}
+
+export type DeleteWorkOrderParams = {
+  workOrderId: string
+  path: string
+}
+
+export type WorkOrderFormData = {
+  name: string;
+  date: string;
+  status: string;
+  labour: string;
+  activity: string;
+  contractor: string;
+  lots: { lot: string; hectareas: number }[]; 
+  deposit: string;
+  usedProducts: {product: string; quantity: number}[]
+  userId: string;
+  orgId: string;
+}

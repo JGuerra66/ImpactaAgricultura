@@ -70,3 +70,16 @@ export const stockMovementDefaultValues = {
   receipt: '',
   concept: '',
 }
+
+export const workOrderDefaultValues = {
+  name: '',
+  date: new Date(),
+  status: 'pendiente',
+  labour: '',
+  activity: '',
+  lot: '',
+  deposit: '',
+  usedProducts: [],
+  userId: '',
+  orgId: '',
+}

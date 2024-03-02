@@ -25,15 +25,19 @@ import {
   type ActivityDropdownProps = {
     value?: string
     onChangeHandler?: () => void
+    userId: string
+    orgId: string
   }
   
-  const ActivityDropdown = ({ value, onChangeHandler }: ActivityDropdownProps) => {
+  const ActivityDropdown = ({ value, onChangeHandler,userId, orgId }: ActivityDropdownProps) => {
     const [activities, setActivities] = useState<IActivity[]>([])
     const [newActivity, setNewActivity] = useState('');
   
     const handleAddActivity = () => {
       createActivity({
-        activityName: newActivity.trim()
+        activityName: newActivity.trim(),
+        orgId,
+        userId
       })
         .then((activity) => {
           setActivities((prevState) => [...prevState, activity])
