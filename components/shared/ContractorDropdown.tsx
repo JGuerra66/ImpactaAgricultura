@@ -23,12 +23,11 @@ import {
   
   
   type ContractorDropdownProps = {
-    value?: string
-    onChangeHandler?: () => void
-    userId: string
-    orgId: string
-  }
-  
+    value?: string;
+    onChangeHandler?: (value: string) => void;
+    userId: string;
+    orgId: string;
+  };
   const ContractorDropdown = ({ value, onChangeHandler ,orgId, userId}: ContractorDropdownProps) => {
     const [contractors, setContractors] = useState<IContractor[]>([])
     const [newContractor, setNewContractor] = useState('');

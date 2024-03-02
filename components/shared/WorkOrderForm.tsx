@@ -40,6 +40,7 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     contractor: '',
     userId: userId,
     orgId: orgId,
+    _id: ''
   };
 
   const [formData, setFormData] = useState<WorkOrderFormData>({
@@ -61,6 +62,8 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
       activity,
     });
   };
+  const date = new Date(formData.date);
+  const formattedDate = date.toISOString().split('T')[0];
 
   const handleContractorChange = (contractor:string) => {
     setFormData({
@@ -169,90 +172,95 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
   
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Nombre:</label>
-        <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="border-2 border-gray-300 p-2 rounded-md" />
-      </div>
-      <div>
-        <label>Fecha:</label>
-        <input type="date" name="date" value={formData.date} onChange={handleInputChange} className="border-2 border-gray-300 p-2 rounded-md" />
-      </div>
-      <div>
-        <DepositDropdown
-         value={formData.deposit}
-         orgId={formData.orgId}
-         onChangeHandler={(deposit: string) => handleDepositChange(deposit)}/>
-      </div>
-      <div>
-        <label>Labor:</label>
-        <LabourDropdown
-          value={formData.labour}
-          orgId={formData.orgId}
-          onChangeHandler={handleLabourChange}
-        />
-      </div>
-      <div>
-        <label>Actividad:</label>
-        <ActivityDropdown
-          value={formData.activity}
-          orgId={formData.orgId}
-          onChangeHandler={handleActivityChange}
-        />
-      </div>
-      <div>
-        <label>Contratista:</label>
-        <ContractorDropdown
-          value={formData.contractor}
-          orgId={formData.orgId}
-          userId={formData.userId}
-          onChangeHandler={handleContractorChange}
-        />
-      </div>
-      <div>
-        <h2>Lotes:</h2>
-        {formData.lots.map((lot, index) => (
-          <div key={index}>
-            <label>Lote:</label>
-            <LotDropdown
-              value={lot.lot}
-              orgId={formData.orgId}
-              onChangeHandler={(selectedLot) => handleLotChange(index, selectedLot)}
-            />
-            <label>Hectáreas:</label>
-            <input
-              className="border-2 border-gray-300 p-2 rounded-md"
-              type="number"
-              value={lot.hectareas}
-              onChange={(e) => handleHectareasChange(index, parseInt(e.target.value))}
-            />
-            <button type="button" onClick={() => handleRemoveLot(index)}>Eliminar lote</button>
-          </div>
-        ))}
-        <Button type="button" onClick={handleAddLot}>Agregar lote</Button>
-      </div>
-      <div>
-        <h2>Productos utilizados:</h2>
-        {formData.usedProducts.map((product, index) => (
-          <div key={index}>
-            <ProductDropdown
-              value={product.product}
-              orgId={formData.orgId}
-              onChangeHandler={(productId) => handleProductChange(index, productId)}
-            />
-            <input
-              className="border-2 border-gray-300 p-2 rounded-md"
-              type="number"
-              value={product.quantity}
-              onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-            />
-            <button type="button" onClick={() => handleRemoveProduct(index)}>Eliminar Producto</button>
-          </div>
-        ))}
-        <Button type="button" onClick={handleAddProduct}>Agregar producto</Button>
-      </div>
-      <Button type="submit">Enviar</Button>
-    </form>
+    <form onSubmit={handleSubmit} className="space-y-6">
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Nombre:</label>
+    <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="border-2 border-gray-300 p-2 rounded-md" />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Actividad:</label>
+    <ActivityDropdown
+      value={formData.activity}
+      orgId={formData.orgId}
+      userId={formData.userId}
+      onChangeHandler={(activity: string) => handleActivityChange(activity)}
+    />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Contratista:</label>
+    <ContractorDropdown
+      value={formData.contractor}
+      orgId={formData.orgId}
+      userId={formData.userId}
+      onChangeHandler={(contractor: string) => handleContractorChange(contractor)}
+    />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Labor:</label>
+    <LabourDropdown
+      value={formData.labour}
+      orgId={formData.orgId}
+      userId={formData.userId}
+      onChangeHandler={(labour: string) => handleLabourChange(labour)}
+      
+    />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Fecha:</label>
+    <input type="date" name="date" value={formattedDate} onChange={handleInputChange} className="border-2 border-gray-300 p-2 rounded-md" />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Depósito:</label>
+    <DepositDropdown
+      value={formData.deposit}
+      orgId={formData.orgId}
+      onChangeHandler={(deposit: string) => handleDepositChange(deposit)}
+    />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <h2 className="font-bold text-lg">Lotes:</h2>
+    {formData.lots.map((lot, index) => (
+  <div key={index} className="flex items-center space-x-2">
+    <LotDropdown
+      value={lot.lot}
+      orgId={formData.orgId}
+      onChangeHandler={(selectedLot) => handleLotChange(index, selectedLot)}
+      
+    />
+    <input
+      className="border-2 border-gray-300 p-2 rounded-md flex-grow"
+      type="number"
+      value={lot.hectareas}
+      onChange={(e) => handleHectareasChange(index, parseInt(e.target.value))}
+    />
+    <button type="button" onClick={() => handleRemoveLot(index)} className="bg-red-500 text-white py-2 px-4 rounded">Eliminar lote</button>
+  </div>
+))}
+    <Button type="button" onClick={handleAddLot} className="bg-blue-500 text-white py-2 px-4 rounded">Agregar lote</Button>
+  </div>
+  <div className="flex flex-col space-y-2">
+    <h2 className="font-bold text-lg">Productos utilizados:</h2>
+    {formData.usedProducts.map((product, index) => (
+  <div key={index} className="flex items-center space-x-2">
+    <ProductDropdown
+      value={product.product}
+      orgId={formData.orgId}
+      onChangeHandler={(productId) => handleProductChange(index, productId)}
+      
+    />
+    <input
+      className="border-2 border-gray-300 p-2 rounded-md flex-grow"
+      type="number"
+      value={product.quantity}
+      onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
+    />
+    <button type="button" onClick={() => handleRemoveProduct(index)} className="bg-red-500 text-white py-2 px-4 rounded">Eliminar Producto</button>
+  </div>
+))}
+    <Button type="button" onClick={handleAddProduct} className="bg-blue-500 text-white py-2 px-4 rounded">Agregar producto</Button>
+  </div>
+  <Button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">Enviar</Button>
+</form>
   );
 }
 

@@ -24,7 +24,7 @@ import {
   
   type LabourDropdownProps = {
     value?: string
-    onChangeHandler?: () => void
+    onChangeHandler?: (value: string) => void;
     userId: string
     orgId: string
   }

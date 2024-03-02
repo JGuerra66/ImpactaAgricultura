@@ -26,7 +26,12 @@ export const headerLinks = [
    {
       label: 'Stock',
       route: '/stock'
-   }
+   },
+
+    {
+        label: 'Ordenes de trabajo',
+        route: '/workorders'
+    },
 
    
   ]

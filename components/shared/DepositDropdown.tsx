@@ -13,7 +13,7 @@ import {
   type DepositDropdownProps = {
     value?: string
     orgId: string
-    onChangeHandler?: () => void
+    onChangeHandler?: (value: string) => void;
   }
   
   const DepositDropdown = ({ value, onChangeHandler, orgId }: DepositDropdownProps) => {
