@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import DepositDropdown from './DepositDropdown';
-import { string } from 'zod';
+import { date, string } from 'zod';
 import { WorkOrderFormData } from '@/types';
 import LabourDropdown from './LabourDropdown';
 import { create } from 'domain';
@@ -62,8 +62,7 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
       activity,
     });
   };
-  const date = new Date(formData.date);
-  const formattedDate = date.toISOString().split('T')[0];
+ 
 
   const handleContractorChange = (contractor:string) => {
     setFormData({
@@ -170,6 +169,7 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     });
   };
   
+ 
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -207,7 +207,8 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
   </div>
   <div className="flex flex-col space-y-2">
     <label className="font-bold text-lg">Fecha:</label>
-    <input type="date" name="date" value={formattedDate} onChange={handleInputChange} className="border-2 border-gray-300 p-2 rounded-md" />
+    <input type="date" name="date" value={formData.date} onChange={handleInputChange} className="border-2 border-gray-300 p-2 rounded-md" />
+    
   </div>
   <div className="flex flex-col space-y-2">
     <label className="font-bold text-lg">Depósito:</label>

@@ -46,12 +46,14 @@ export const columns: ColumnDef<ProductStock>[] = [
     header: "Depósito",
   },
   {
-    accessorKey: "product.unit",
+    accessorKey: "unit.name",
     header: "Unidad",
   },
+  
+
   {
-    accessorKey: "product.category",
-    header: "Categoría",
-  },
+    accessorKey: "newField",
+    header: "Proyectado al dia de hoy",
+  }
   
   ]
