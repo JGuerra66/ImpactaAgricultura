@@ -467,6 +467,7 @@ export type DeleteWorkOrderParams = {
 }
 
 export type WorkOrderFormData = {
+  _id: string;
   name: string;
   date: string;
   status: string;

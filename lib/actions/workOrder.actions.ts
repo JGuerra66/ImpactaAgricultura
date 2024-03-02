@@ -14,6 +14,8 @@ import Activity from "../mongodb/database/models/activities.model"
 import Lot from "../mongodb/database/models/lot.model"
 import Product from "../mongodb/database/models/product.model"
 import Labour from "../mongodb/database/models/labour.model"
+import StockMovement, { IStockMovement } from "../mongodb/database/models/stockMovement.model"
+import { createStockMovement } from "./stockMovement.actions"
 
 // CREATE
 export const createWorkOrders = async (formData: WorkOrderFormData) => {
@@ -68,11 +70,11 @@ export const deleteWorkOrder = async (workOrderId: string) => {
 
 const populateWorkOrder = (query: any) => {
   return query
-    .populate({ path: 'depositId', model: Deposit, select: '_id name' })
-    .populate({ path: 'activityId', model: Activity, select: '_id name' })
-    .populate({ path: 'labourId', model: Labour, select: '_id name' })
-    .populate({ path: 'productId', model: Product, select: '_id name' })
-    .populate({ path: 'lotId', model: Lot, select: '_id name' })
+    .populate({ path: 'deposit', model: Deposit, select: '_id name' })
+    .populate({ path: 'activity', model: Activity, select: '_id name' })
+    .populate({ path: 'labour', model: Labour, select: '_id name' })
+    .populate({ path: 'usedProducts', model: Product, select: '_id name' })
+    .populate({ path: 'lot', model: Lot, select: '_id name' })
 }
 
 
@@ -91,5 +93,62 @@ export const getAllWorkOrders = async (orgId: string) => {
     };
   } catch (error) {
     handleError(error);
+  }
+}
+
+// GET ONE BY ID
+export const getWorkOrderById = async (workOrderId: string) => {
+  try {
+    await connectToDatabase();
+
+    const workOrder = await populateWorkOrder(WorkOrder.findById
+      (workOrderId));
+
+    if (!workOrder) throw new Error('WorkOrder not found');
+      
+    return JSON.parse(JSON.stringify(workOrder));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export async function executeWorkOrder(workOrderId: string) {
+  try {
+    await connectToDatabase()
+    
+    const updatedWorkOrder = await WorkOrder.findByIdAndUpdate(
+      workOrderId,
+      { status: 'realizado' },
+      { new: true }
+    );
+
+    if (!updatedWorkOrder) throw new Error('WorkOrder not found');
+
+    console.log(updatedWorkOrder.usedProducts);
+    for (const product of updatedWorkOrder.usedProducts) {
+      const stockMovement: IStockMovement = {
+        productId: product._id,
+        quantity: product.quantity,
+        depositId: updatedWorkOrder.depositId,
+        movementType: 'salida', 
+        receipt: '', 
+        concept: 'Ejecucion de orden de trabajo',
+        userId: updatedWorkOrder.userId,
+        orgId: updatedWorkOrder.orgId, 
+      };
+
+      console.log('Creating stock movement with:', stockMovement);
+      await createStockMovement({
+        userId: updatedWorkOrder.userId,
+        orgId: updatedWorkOrder.orgId,
+        stockMovement: stockMovement,
+        path: '' 
+      });
+    }
+
+    
+
+  } catch (error) {
+    
   }
 }

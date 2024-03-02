@@ -7,6 +7,7 @@ import User from "../mongodb/database/models/user.model"
 import StockMovementHistory from "../mongodb/database/models/depositStock.model"
 import { revalidatePath } from "next/cache"
 
+
 // CREATE
 export const createStockMovementHistory = async ({stockMovementHistory, userId, path}: CreateStockMovementHistoryParams) => {
     try {
@@ -96,3 +97,4 @@ export async function deleteStockMovementHistory({ stockMovementHistoryId, path 
       handleError(error)
     }
 }
+
