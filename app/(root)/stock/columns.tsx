@@ -19,37 +19,77 @@ import {ProductStock} from "@/types"
 // You can use a Zod schema here if you want.
 
 export const columns: ColumnDef<ProductStock>[] = [
-  {
-    accessorKey: "productId.name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Nombre
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-  },
-  {
-    accessorKey: "currentStock",
-    header: "Stock Actual",
-  },
-  {
-    accessorKey: "projectedStock",
-    header: "Stock Proyectado",
-  },
-  {
-    accessorKey: "depositId.name",
-    header: "Depósito",
-  },
-  {
-    accessorKey: "unit.name",
-    header: "Unidad",
-  },
   
+    {
+      accessorKey: "productId.name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Nombre
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+  },
+  {
+      accessorKey: "currentStock",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Stock Actual
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+  },
+  {
+      accessorKey: "projectedStock",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Stock Proyectado
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+  },
+  {
+      accessorKey: "depositId.name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Depósito
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+  },
+  {
+      accessorKey: "unit.name",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Unidad
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+  },
 
   {
     accessorKey: "newField",

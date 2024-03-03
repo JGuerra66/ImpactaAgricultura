@@ -48,6 +48,7 @@ export const updateWorkOrder = async ({userId, workOrder, path}: UpdateWorkOrder
 
       const updatedWorkOrder = await WorkOrder.findByIdAndUpdate
         (workOrder._id, workOrder, { new: true });
+        console.log('Updated workOrder:', updatedWorkOrder);
 
         return JSON.parse(JSON.stringify(updatedWorkOrder));
     } catch (error) {
@@ -121,20 +122,22 @@ export async function executeWorkOrder(workOrderId: string) {
       { status: 'realizado' },
       { new: true }
     );
-
+    
     if (!updatedWorkOrder) throw new Error('WorkOrder not found');
 
-    console.log(updatedWorkOrder.usedProducts);
-    for (const product of updatedWorkOrder.usedProducts) {
+    const workOrder = await WorkOrder.findById(workOrderId);
+
+    console.log(workOrder.usedProducts);
+    for (const product of workOrder.usedProducts) {
       const stockMovement: IStockMovement = {
-        productId: product._id,
+        productId: product.product,
         quantity: product.quantity,
-        depositId: updatedWorkOrder.depositId,
+        depositId: workOrder.deposit,
         movementType: 'salida', 
         receipt: '', 
         concept: 'Ejecucion de orden de trabajo',
-        userId: updatedWorkOrder.userId,
-        orgId: updatedWorkOrder.orgId, 
+        userId: workOrder.userId,
+        orgId: workOrder.orgId, 
       };
 
       console.log('Creating stock movement with:', stockMovement);

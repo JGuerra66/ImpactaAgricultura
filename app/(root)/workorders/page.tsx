@@ -43,6 +43,7 @@ export default function Page() {
         }));
   
         setData(transformedData);
+        console.log(transformedData);
       })
       .catch(err => console.error(err));
   }, [organization]);

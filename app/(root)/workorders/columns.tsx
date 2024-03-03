@@ -11,41 +11,113 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { executeWorkOrder } from "@/lib/actions/workOrder.actions";
 
 
 export const columns: ColumnDef<WorkOrderFormData>[] = [
-    {
-        accessorKey: 'name',
-        header: 'Nombre',
-    }
-    ,
-    {
-        accessorKey: 'deposit.name',
-        header: 'Depósito',
-    }
-    ,
-    {
-        accessorKey: 'date',
-        header: 'Fecha',
+  {
+    accessorKey: 'name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Nombre
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
-    {
-        accessorKey: 'status',
-        header: 'Estado',
+},
+{
+    accessorKey: 'deposit.name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Depósito
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
-    {
-        accessorKey: 'labour.name',
-        header: 'Trabajo',
+},
+{
+    accessorKey: 'date',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Fecha
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
-    {
-        accessorKey: 'activity.name',
-        header: 'Actividad',
+},
+{
+    accessorKey: 'status',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Estado
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
     },
+},
+{
+    accessorKey: 'labour.name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Trabajo
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+},
+{
+    accessorKey: 'activity.name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Actividad
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+},
+{
+    accessorKey: 'lot.name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Lote
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+},
     {
-        accessorKey: 'lot.name',
-        header: 'Lote',
+      accessorKey: 'hectareas',
+      header: 'Hectareas',
     },
     {
         header: 'Productos utizados',
@@ -64,7 +136,7 @@ export const columns: ColumnDef<WorkOrderFormData>[] = [
         
             const handleExecuteClick = async () => {
               await executeWorkOrder(workOrder._id);
-              window.location.reload();
+              //window.location.reload();
             };
         
             return (
