@@ -23,38 +23,38 @@ export const createWorkOrders = async (formData: WorkOrderFormData) => {
     await connectToDatabase();
 
     const newWorkOrders = await Promise.all(formData.lots.map(async (lot) => {
-      let totalCost = 0; // Inicializar totalCost para este lote
+      let totalCost = 0; 
 
-      const updatedUsedProducts = [...formData.usedProducts];
-      // Calcular el costo total de los productos utilizados para este lote
-      updatedUsedProducts.forEach(updatedUsedProducts => {
+      const updatedUsedProducts = JSON.parse(JSON.stringify(formData.usedProducts));
+      
+      updatedUsedProducts.forEach((updatedUsedProducts: {product:string; dose: number; quantity: number; valuePerUnit: number; unit: string}) => {
         if (typeof updatedUsedProducts.dose === 'number' && updatedUsedProducts.dose !== 0) {
-          // Calcular quantity utilizando dose y hectareas del lote actual
+          
           updatedUsedProducts.quantity = updatedUsedProducts.dose * lot.hectareas;
           console.log('Dose:', updatedUsedProducts.dose, 'Hectareas:', lot.hectareas, 'Quantity:', updatedUsedProducts.quantity);
         } else {
-          // Si dose no es válido, asignar quantity existente o establecerlo en 0 si no existe
+          
           updatedUsedProducts.quantity = updatedUsedProducts.quantity || 0;
         }
 
-        // Añadir el costo del producto al totalCost
+        
         if (typeof updatedUsedProducts.quantity === 'number') {
           totalCost += updatedUsedProducts.quantity * updatedUsedProducts.valuePerUnit;
         }
       });
 
 
-      // Agregar el costo de mano de obra para este lote
+      
       const labourDetails = await getLabourById(formData.labour);
       totalCost += lot.hectareas * labourDetails.valuePerHectare;
 
-      // Crear la nueva orden de trabajo para este lote con totalCost asignado
+      
       const newWorkOrder = await WorkOrder.create({
         ...formData,
         lot: lot.lot,
         hectareas: lot.hectareas,
         totalCost: totalCost,
-        usedProducts:updatedUsedProducts // Asignar totalCost para este lote
+        usedProducts:updatedUsedProducts 
       });
 
       console.log('Total cost for lot:', totalCost);
