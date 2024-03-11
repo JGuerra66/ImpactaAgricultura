@@ -129,13 +129,13 @@ export const columns: ColumnDef<WorkOrderFormData>[] = [
           cell: ({ row }) => {
             const workOrder = row.original;
             const router = useRouter();
-        
+
             const handleEditClick = () => {
               router.push(`/workorders/${workOrder._id}`);
             };
-        
+
             const handleExecuteClick = async () => {
-              await executeWorkOrder(workOrder._id);
+              await executeWorkOrder(workOrder._id ?? '');
               //window.location.reload();
             };
         

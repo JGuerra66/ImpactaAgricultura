@@ -5,11 +5,11 @@ import { handleError } from "../utils"
 import { connectToDatabase } from "../mongodb/database"
 import Labour from "../mongodb/database/models/labour.model"
 
-export const createLabour = async ({labourName, orgId, userId}:CreateLabourParams) => {
+export const createLabour = async ({labourName, valuePerHectare, orgId, userId}:CreateLabourParams) => {
     try {
         await connectToDatabase()
-
-        const newLabour = await Labour.create({name: labourName ,orgId, userId});
+        console.log('labourName', labourName, 'valuePerHectare', valuePerHectare, 'orgId', orgId, 'userId', userId)
+        const newLabour = await Labour.create({name: labourName ,orgId, userId, valuePerHectare});
         
         return JSON.parse(JSON.stringify(newLabour));
     } catch (error) {

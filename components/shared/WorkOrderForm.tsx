@@ -5,20 +5,12 @@ import ProductDropdown from './ProductDropdown';
 import ContractorDropdown from './ContractorDropdown';
 import { Button } from "@/components/ui/button"
 import LotDropdown from './LotDropdown';
-import {
-
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import DepositDropdown from './DepositDropdown';
-import { date, string } from 'zod';
 import { WorkOrderFormData } from '@/types';
 import LabourDropdown from './LabourDropdown';
-import { create } from 'domain';
 import { createWorkOrders } from '@/lib/actions/workOrder.actions';
+import CampaignDropdown from './CampaignDropdown';
+import { getProductById } from '@/lib/actions/product.actions';
 
 
 type WorkOrderFormProps = {
@@ -31,6 +23,7 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
   const defaultFormData: WorkOrderFormData = {
     name: '',
     activity: '',
+    campaign: '',
     labour: '',
     date: '',
     status: 'pendiente',
@@ -40,7 +33,7 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     contractor: '',
     userId: userId,
     orgId: orgId,
-    _id: ''
+    totalCost: 0,
   };
 
   const [formData, setFormData] = useState<WorkOrderFormData>({
@@ -60,6 +53,13 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     setFormData({
       ...formData,
       activity,
+    });
+  };
+
+  const handleCampaignChange = (campaign: string) => {
+    setFormData({
+      ...formData,
+      campaign,
     });
   };
  
@@ -96,30 +96,53 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     });
   };
 
-  const handleProductChange = (index: number, productId: string | null) => {
+  const handleProductChange = async (index: number, productId: string | null) => {
+    if (productId === null) {
+      // If the user selects the default option, do nothing
+      return;
+    }
+  
     const updatedProducts = [...formData.usedProducts];
-    updatedProducts[index].product = productId as string;
-    setFormData({
-      ...formData,
-      usedProducts: updatedProducts,
-    });
+    updatedProducts[index].product = productId;
+    const productDetails = await getProductById(productId);
+  
+    updatedProducts[index].unit = productDetails.unit.name;
+    updatedProducts[index].valuePerUnit = productDetails.price;
+    setFormData({ ...formData, usedProducts: updatedProducts });
   };
-
+  
   const handleQuantityChange = (index: number, quantity: number) => {
     const updatedProducts = [...formData.usedProducts];
     updatedProducts[index].quantity = quantity;
-    setFormData({
-      ...formData,
-      usedProducts: updatedProducts,
-    });
+    updatedProducts[index].measurementType = 'quantity';
+    setFormData({ ...formData, usedProducts: updatedProducts });
   };
-
+  
+  const handleDosisChange = (index: number, dose: number) => {
+    const updatedProducts = [...formData.usedProducts];
+    updatedProducts[index].dose = dose;
+    updatedProducts[index].measurementType = 'dosis';
+    setFormData({ ...formData, usedProducts: updatedProducts });
+  };
+  
   const handleAddProduct = () => {
     setFormData({
       ...formData,
-      usedProducts: [...formData.usedProducts, { product: '', quantity: 0 }],
+      usedProducts: [
+        ...formData.usedProducts,
+        {
+          product: '',
+          quantity: 0,
+          unit: '', 
+          dose: 0,
+          valuePerUnit: 0,
+          measurementType: 'quantity', 
+        },
+      ],
     });
   };
+
+  
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -130,7 +153,7 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
         setFormData({
           ...defaultFormData,
           ...initialData,
-        }); // Reset formData to initial state
+        });
       });
     } catch (error) {
       
@@ -169,7 +192,23 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     });
   };
   
- 
+
+  const handleMeasurementTypeChange = (index: number, measurementType: string) => {
+    const updatedProducts = [...formData.usedProducts];
+    if (measurementType === 'dosis') {
+      updatedProducts[index].measurementType = 'dosis';
+      updatedProducts[index].dose = updatedProducts[index].quantity || 0; // Setear la dosis al valor actual de cantidad o 0 si no hay cantidad
+      delete updatedProducts[index].quantity; // Eliminar la cantidad si existe
+    } else if (measurementType === 'quantity') {
+      updatedProducts[index].measurementType = 'quantity';
+      updatedProducts[index].quantity = updatedProducts[index].dose || 0; // Setear la cantidad al valor actual de dosis o 0 si no hay dosis
+      delete updatedProducts[index].dose; // Eliminar la dosis si existe
+    }
+    setFormData({
+      ...formData,
+      usedProducts: updatedProducts,
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -184,6 +223,15 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
       orgId={formData.orgId}
       userId={formData.userId}
       onChangeHandler={(activity: string) => handleActivityChange(activity)}
+    />
+  </div>
+  <div className="flex flex-col space-y-2">
+    <label className="font-bold text-lg">Campaña:</label>
+    <CampaignDropdown
+      value={formData.campaign}
+      orgId={formData.orgId}
+      userId={formData.userId}
+      onChangeHandler={(campaign: string) => handleCampaignChange(campaign)}
     />
   </div>
   <div className="flex flex-col space-y-2">
@@ -240,26 +288,51 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
     <Button type="button" onClick={handleAddLot} className="bg-blue-500 text-white py-2 px-4 rounded">Agregar lote</Button>
   </div>
   <div className="flex flex-col space-y-2">
-    <h2 className="font-bold text-lg">Productos utilizados:</h2>
-    {formData.usedProducts.map((product, index) => (
-  <div key={index} className="flex items-center space-x-2">
-    <ProductDropdown
-      value={product.product}
-      orgId={formData.orgId}
-      onChangeHandler={(productId) => handleProductChange(index, productId)}
-      
-    />
-    <input
-      className="border-2 border-gray-300 p-2 rounded-md flex-grow"
-      type="number"
-      value={product.quantity}
-      onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-    />
-    <button type="button" onClick={() => handleRemoveProduct(index)} className="bg-red-500 text-white py-2 px-4 rounded">Eliminar Producto</button>
-  </div>
-))}
-    <Button type="button" onClick={handleAddProduct} className="bg-blue-500 text-white py-2 px-4 rounded">Agregar producto</Button>
-  </div>
+  <h2 className="font-bold text-lg">Productos utilizados:</h2>
+  {formData.usedProducts.map((product, index) => (
+    <div key={index} className="flex items-center space-x-2">
+      <ProductDropdown
+        value={product.product}
+        orgId={formData.orgId}
+        onChangeHandler={(productId) => handleProductChange(index, productId)}
+      />
+      {/* Renderizado condicional del campo de cantidad y los radios */}
+      <>
+        <input
+          className="border-2 border-gray-300 p-2 rounded-md flex-grow"
+          type="number"
+          value={product.quantity}
+          onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
+        />
+        <div className="flex flex-col">
+          <div className="flex items-center">
+            <input
+              type="radio"
+              name={`measurementType-${index}`}
+              value="dosis"
+              checked={product.measurementType === 'dosis'}
+              onChange={() => handleMeasurementTypeChange(index, 'dosis')}
+            />
+            <label>Dosis</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="radio"
+              name={`measurementType-${index}`}
+              value="quantity"
+              checked={product.measurementType === 'quantity'}
+              onChange={() => handleMeasurementTypeChange(index, 'quantity')}
+            />
+            <label>Total</label>
+          </div>
+        </div>
+      </>
+      <button type="button" onClick={() => handleRemoveProduct(index)} className="bg-red-500 text-white py-2 px-4 rounded">Eliminar Producto</button>
+    </div>
+  ))}
+  <Button type="button" onClick={handleAddProduct} className="bg-blue-500 text-white py-2 px-4 rounded">Agregar producto</Button>
+</div>
+
   <Button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">Enviar</Button>
 </form>
   );

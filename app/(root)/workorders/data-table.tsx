@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
                 (column) => column.getCanHide()
               )
               .map((column) => {
-                console.log(column);
+                
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
@@ -96,6 +96,7 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
+                    
                     {column.id}
                   </DropdownMenuCheckboxItem>
                 )

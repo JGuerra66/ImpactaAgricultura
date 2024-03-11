@@ -272,6 +272,7 @@ export type CreateLabourParams = {
   labourName: string
   userId: string
   orgId: string
+  valuePerHectare: number
 }
 
 // ====== UNIT PARAMS
@@ -414,11 +415,14 @@ export type CreateWorkOrderParams = {
     lot: string;
     deposit: string;
     hectareas: number;
+    totalCost: number;
   }
   
    usedProducts: {
     product: Product;
     quantity: number;
+    unitValue: number;
+    unit: string;
   }[]
 
   path: string
@@ -467,8 +471,9 @@ export type DeleteWorkOrderParams = {
 }
 
 export type WorkOrderFormData = {
-  _id: string;
+  _id?: string;
   name: string;
+  campaign: string;
   date: string;
   status: string;
   labour: string;
@@ -476,7 +481,27 @@ export type WorkOrderFormData = {
   contractor: string;
   lots: { lot: string; hectareas: number }[]; 
   deposit: string;
-  usedProducts: {product: string; quantity: number}[]
+  usedProducts: {product: string; quantity?: number, unit: string, valuePerUnit: number, dose?: number, measurementType:string}[]
+  totalCost: number;
   userId: string;
   orgId: string;
+}
+
+// ====== CAMPAIGN PARAMS
+
+export type CreateCampaignParams = {
+  campaignName: string
+  userId: string
+  orgId: string
+}
+
+export type UpdateCampaignParams = {
+  campaignName: string
+  userId: string
+  orgId: string
+}
+
+export type DeleteCampaignParams = {
+  campaignId: string
+  path: string
 }
