@@ -178,34 +178,50 @@ export function DataTable<TData extends TableData, TValue>({
           {expandedRows[row.id] && (
             <TableRow>
               <TableCell colSpan={columns.length}>
-                {/* Aquí puedes renderizar los datos adicionales */}
-                <div>
-                  <div><strong>Name:</strong> {row.original.name}</div>
-                  <div><strong>Activity:</strong> {row.original.activity.name}</div>
-                  <div><strong>Campaign:</strong> {row.original.campaign.name}</div>
-                  <div><strong>Labour:</strong> {row.original.labour.name}</div>
-                  <div><strong>Contractor:</strong> {row.original.contractor.name}</div>
-                  <div><strong>Date:</strong> {row.original.date}</div>
-                  <div><strong>Status:</strong> {row.original.status}</div>
-                  <div><strong>Lot:</strong> {row.original.lot.name}</div>
-                  <div><strong>Hectareas:</strong> {row.original.hectareas}</div>
-                  <div><strong>Used Products:</strong>
-                    {row.original.usedProducts.map((usedProduct, index) => (
-                      <div key={index}>
-                        Nombre: {usedProduct.product.name}, 
-                        Cantidad Total: {usedProduct.quantity}, 
-                        Unidad: {usedProduct.unit}, 
-                        Dosis: {usedProduct.dose}, 
-                        Valor unitario: {usedProduct.valuePerUnit}
-                      </div>
-                    ))}
-                    <div><strong>Valor Total de Productos:</strong>
-                      {row.original.usedProducts.reduce((total, usedProduct) => total + usedProduct.quantity * usedProduct.valuePerUnit, 0)}
-                    </div>
-                  </div>
-                  <div><strong>Deposit:</strong> {row.original.deposit.name}</div>
-                  <div><strong>Total Cost:</strong> {row.original.totalCost}</div>
-                </div>
+                
+              <div className="flex">
+    <div className="flex-1 pr-4">
+        <div><strong>Name:</strong> {row.original.name}</div>
+        <div><strong>Activity:</strong> {row.original.activity.name}</div>
+        <div><strong>Campaign:</strong> {row.original.campaign.name}</div>
+        <div><strong>Labour:</strong> {row.original.labour.name}</div>
+        <div><strong>Contractor:</strong> {row.original.contractor.name}</div>
+        <div><strong>Date:</strong> {row.original.date}</div>
+        <div><strong>Status:</strong> {row.original.status}</div>
+        <div><strong>Lot:</strong> {row.original.lot.name}</div>
+        <div><strong>Hectareas:</strong> {row.original.hectareas}</div>
+        <div><strong>Deposit:</strong> {row.original.deposit.name}</div>
+        <div><strong>Total Cost:</strong> {row.original.totalCost}</div>
+    </div>
+    <div className="flex-1 pl-4 border-l">
+    <div><strong>Productos Utilizados:</strong></div>
+    <table className="table-auto w-full border-collapse border-2 border-gray-500">
+    <thead>
+        <tr>
+            <th className="border-2 border-gray-500 text-center">Nombre</th>
+            <th className="border-2 border-gray-500 text-center">Cantidad Total</th>
+            <th className="border-2 border-gray-500 text-center">Unidad</th>
+            <th className="border-2 border-gray-500 text-center">Dosis</th>
+            <th className="border-2 border-gray-500 text-center">Valor unitario</th>
+        </tr>
+    </thead>
+    <tbody>
+        {row.original.usedProducts.map((usedProduct, index) => (
+            <tr key={index}>
+                <td className="border-2 border-gray-500 text-center">{usedProduct.product.name}</td>
+                <td className="border-2 border-gray-500 text-center">{usedProduct.quantity}</td>
+                <td className="border-2 border-gray-500 text-center">{usedProduct.unit}</td>
+                <td className="border-2 border-gray-500 text-center">{usedProduct.dose}</td>
+                <td className="border-2 border-gray-500 text-center">{usedProduct.valuePerUnit}</td>
+            </tr>
+        ))}
+    </tbody>
+</table>
+    <div><strong>Valor Total de Productos:</strong>
+        {row.original.usedProducts.reduce((total, usedProduct) => total + usedProduct.quantity * usedProduct.valuePerUnit, 0)}
+    </div>
+</div>
+</div>
               </TableCell>
             </TableRow>
           )}
