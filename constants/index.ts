@@ -32,7 +32,7 @@ export const headerLinks = [
         label: 'Ordenes de trabajo',
         route: '/workorders'
     },
-
+    { label: 'Calculadora de costes', route: '/costCalculator' },
    
   ]
 

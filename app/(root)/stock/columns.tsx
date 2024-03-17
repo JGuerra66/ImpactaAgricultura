@@ -1,6 +1,6 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -17,8 +17,28 @@ import {ProductStock} from "@/types"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+interface TableData {
+  _id: string
+  productId: {
+    _id: string
+    name: string
+  }
+  unit: {
+    _id: string
+    name: string
+  }
+  currentStock: number;
+  projectedStock: number;
+  depositId: {
+    _id: string
+    name: string
+  }
+  userId: string
+  orgId: string
+  volatileStock: number;
+}
 
-export const columns: ColumnDef<ProductStock>[] = [
+export const columns: ColumnDef<TableData>[] = [
   
     {
       accessorKey: "productId.name",
@@ -80,6 +100,14 @@ export const columns: ColumnDef<ProductStock>[] = [
   {
     accessorKey: "volatileStock",
     header: "Stock a la fecha designada",
-  }
+    cell: ({ row }: CellContext<TableData, unknown>) => {
+        const volatileStock = row.original.volatileStock;
+        return (
+            <div style={{ color: volatileStock < 0 ? 'red' : 'black' }}>
+                {volatileStock}
+            </div>
+        )
+    },
+}
   
   ]

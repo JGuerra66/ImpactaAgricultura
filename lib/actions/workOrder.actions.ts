@@ -110,11 +110,12 @@ const populateWorkOrder = (query: any) => {
   return query
     .populate({ path: 'deposit', model: Deposit, select: '_id name' })
     .populate({ path: 'activity', model: Activity, select: '_id name' })
-    .populate({ path: 'labour', model: Labour, select: '_id name' })
+    .populate({ path: 'labour', model: Labour, select: '_id name valuePerHectare' })
     .populate({ path: 'usedProducts.product', model: Product, select: '_id name' }) 
     .populate({ path: 'lot', model: Lot, select: '_id name' })
     .populate({ path: 'contractor', model: Contractor, select: '_id name' })
     .populate({ path: 'campaign', model: 'Campaign', select: '_id name'})
+    
 }
 
 

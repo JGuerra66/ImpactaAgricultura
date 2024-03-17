@@ -18,8 +18,13 @@ interface IWorkOrderLocal {
     name: string;
     campaign: ICampaign;
     activity: string;
-    labour: ILabour;
+    labour: {
+        valuePerHectare: number;
+        _id: string;
+        name: string;
+    }
     date: Date;
+    valuePerHectare: number;
     status: string;
     lot: ILot;
     hectareas: number;
@@ -133,7 +138,17 @@ const CostCalculator = ({userId, orgId}: Props) => {
         return total + costeProductos;
     }, 0);
 
-    const costetotalLabor = realizadasWorkOrders.reduce((total, workOrder) => total + workOrder.labour.valuePerHectare * workOrder.hectareas, 0);
+    const costetotalLabor = realizadasWorkOrders.reduce((total, workOrder) => {
+        const valuePerHectare = Number(workOrder.labour.valuePerHectare);
+        const hectareas = Number(workOrder.hectareas);
+    
+        if (isNaN(valuePerHectare) || isNaN(hectareas)) {
+            console.error('Invalid value:', workOrder);
+            return total;
+        }
+    
+        return total + valuePerHectare * hectareas;
+    }, 0);
 
     const detalleProductos = realizadasWorkOrders.reduce((acc: Record<string, ProductoDetalle>, workOrder) => {
         workOrder.usedProducts.forEach(producto => {
@@ -209,7 +224,7 @@ const CostCalculator = ({userId, orgId}: Props) => {
                 <th className="px-4 py-2 border-b-2 border-black">Lote</th>
                 <th className="px-4 py-2 border-b-2 border-black">Depósito</th>
                 <th className="px-4 py-2 border-b-2 border-black">Valor Unitario</th>
-                <th className="px-4 py-2 border-b-2 border-black">Total Utilizado</th>
+                <th className="px-4 py-2 border-b-2 border-black">Valor Total Utilizado</th>
             </tr>
         </thead>
         <tbody>

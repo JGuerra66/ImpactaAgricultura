@@ -322,7 +322,8 @@ function WorkOrderForm({ orgId, userId, initialData }: WorkOrderFormProps) {
           className="border-2 border-gray-300 p-2 rounded-md flex-grow"
           type="number"
           value={product.quantity}
-          onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
+          step="any"
+          onChange={(e) => handleQuantityChange(index, parseFloat(e.target.value))}
           disabled={!formData.deposit} // Deshabilitar si no se ha seleccionado un depósito
         />
         <div className="flex flex-col">
