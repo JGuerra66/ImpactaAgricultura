@@ -13,6 +13,7 @@ export const productFormSchema = z.object({
     name: z.string().min(3).max(255),
     deposit: z.string(),
     kmzFile: z.string().optional(),
+    hectares: z.number()
   });
 
   export const depositFormSchema = z.object({

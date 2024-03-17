@@ -1,6 +1,6 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table";
+import { Cell, CellContext, ColumnDef } from "@tanstack/react-table";
 import { WorkOrderFormData } from "@/types";
 import { Button } from "@/components/ui/button"
 import {
@@ -11,12 +11,42 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { Activity, ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { executeWorkOrder } from "@/lib/actions/workOrder.actions";
+import Campaign from "@/lib/mongodb/database/models/campaign.model";
+import Contractor from "@/lib/mongodb/database/models/contractor.model";
+import Deposit from "@/lib/mongodb/database/models/deposit.model";
+import Labour from "@/lib/mongodb/database/models/labour.model";
+import Lot from "@/lib/mongodb/database/models/lot.model";
+interface TableData {
+  _id: string
+  name: string
+  activity: typeof Activity
+  campaign: typeof Campaign
+  labour: typeof Labour
+  contractor: typeof Contractor
+  date: string
+  status: string
+  lot: typeof Lot
+  hectareas: number
+  usedProducts: usedProducts[]
+  deposit: typeof Deposit
+  totalCost: number
 
+}
 
-export const columns: ColumnDef<WorkOrderFormData>[] = [
+interface usedProducts {
+  product:{
+    name: string
+  }
+  quantity: number
+  unit: string
+  dose: number
+  valuePerUnit: number
+}
+
+export const columns: ColumnDef<TableData>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -60,18 +90,26 @@ export const columns: ColumnDef<WorkOrderFormData>[] = [
     },
 },
 {
-    accessorKey: 'status',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Estado
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+  accessorKey: 'status',
+  header: ({ column }) => {
+    return (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Estado
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    )
+  },
+  cell: ({ row }: CellContext<TableData, unknown>) => {
+    const status = row.original.status;
+    return (
+      <div style={{ color: status === 'pendiente' ? 'red' : 'green' }}>
+        {status}
+      </div>
+    )
+  },
 },
 {
     accessorKey: 'labour.name',
@@ -120,10 +158,14 @@ export const columns: ColumnDef<WorkOrderFormData>[] = [
       header: 'Hectareas',
     },
     {
-        header: 'Productos utizados',
-        accessorKey: 'usedProducts',}, 
-
-
+      accessorKey: 'totalCost',
+      header: 'Costo total',
+    },
+    {
+      accessorKey: 'contractor.name',
+      header: 'Contratista',
+    }
+    ,
         {
           id: "actions",
           cell: ({ row }) => {
@@ -136,7 +178,7 @@ export const columns: ColumnDef<WorkOrderFormData>[] = [
 
             const handleExecuteClick = async () => {
               await executeWorkOrder(workOrder._id ?? '');
-              //window.location.reload();
+              window.location.reload();
             };
         
             return (

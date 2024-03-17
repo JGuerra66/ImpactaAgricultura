@@ -101,6 +101,19 @@ const LotForm = ({userId, type, lot, lotId,orgId}: LotFormProps) => {
             )}
             />
 
+                  <FormField
+                        control={form.control}
+                        name="hectares"
+                        render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormControl>
+                                    <Input type="number" placeholder="Hectares" {...field} className="input-field"/>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
         <FormField
             control={form.control}
             name="deposit"

@@ -61,11 +61,11 @@ return (
       <SelectValue placeholder="Labour" />
     </SelectTrigger>
     <SelectContent>
-      {labours.length > 0 && labours.map((labour) => (
-        <SelectItem key={labour._id} value={labour._id} className="select-item p-regular-14">
-          {labour.name}
-        </SelectItem>
-      ))}
+    {labours.length > 0 && labours.map((labour) => (
+  <SelectItem key={labour._id} value={labour._id} className="select-item p-regular-14">
+    {labour.name} - ${labour.valuePerHectare} por hectárea
+  </SelectItem>
+))}
 
       <AlertDialog>
         <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Agrega nueva labour</AlertDialogTrigger>

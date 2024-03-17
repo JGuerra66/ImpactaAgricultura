@@ -60,35 +60,10 @@ export const getAllProductStocks = async (orgId: string) => {
 
         const productStocks = (await populateProductStock(productStocksQuery)).map((doc: { toObject: () => any }) => doc.toObject());
 
-
-        const workOrders = await WorkOrder.find({ orgId });
-
-        const updatedProductStocks = productStocks.map((productStock: { depositId: any; stockActual: number }) => {
-            const relatedWorkOrders = workOrders.filter(workOrder => workOrder.depositId === productStock.depositId);
-            
-            const totalUsedProducts = relatedWorkOrders.reduce((sum, workOrder) => {
-              const usedProductsSum = workOrder.usedProducts.reduce((sum: any, usedProduct: { quantity: any }) => sum + usedProduct.quantity, 0);
-              return sum + usedProductsSum;
-            }, 0);
-            
-            console.log('totalUsedProducts:', totalUsedProducts);
-          
-            const stockActual = productStock.stockActual || 0;
-          
-            console.log('stockActual:', stockActual); 
-          
-            const newField = stockActual - totalUsedProducts;
-          
-            console.log('newField:', newField); 
-          
-            return { ...productStock, newField };
-          });
-
         return {
-            data: JSON.parse(JSON.stringify(updatedProductStocks)),
+            data: JSON.parse(JSON.stringify(productStocks)),
         }
     } catch (error) {
         handleError(error)
     }
 }
-

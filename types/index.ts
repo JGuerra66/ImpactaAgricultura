@@ -44,8 +44,9 @@ export type CreateLotParams = {
   orgId: string
   lot: {
     name: string;
-    deposit: string; // deposit is now a string
-    kmzFile?: string; // kmzFile is optional
+    deposit: string; 
+    kmzFile?: string; 
+    hectares: number;
   }
   path: string
 }
@@ -55,8 +56,9 @@ export type UpdateLotParams = {
   lot: {
     _id: string;
     name: string;
-    deposit: string; // deposit is now a string
-    kmzFile?: string; // kmzFile is optional
+    deposit: string; 
+    kmzFile?: string; 
+    hectares: number;
   }
   path: string
 }
@@ -79,6 +81,7 @@ export type Lot = {
   kmzFile?: string; // kmzFile is optional
   userId: string;
   orgId: string;
+  hectares: number;
 }
 
 
@@ -477,6 +480,7 @@ export type WorkOrderFormData = {
   date: string;
   status: string;
   labour: string;
+  valuePerHectare: number;
   activity: string;
   contractor: string;
   lots: { lot: string; hectareas: number }[]; 

@@ -4,6 +4,7 @@ export interface ILot extends Document {
     _id: string;
     name: string;
     deposit: string;
+    hectares: number;
     kmzFile: string;
     userId: string;
     orgId: string;
@@ -14,7 +15,8 @@ const LotSchema = new Schema({
     deposit: {type: Schema.Types.ObjectId, ref: 'Deposit', required: true},
     kmzFile: {type: String, required: false},
     userId: {type : String, required: true},
-    orgId: {type: String, required: true}
+    orgId: {type: String, required: true},
+    hectares: {type: Number, required: true}
 });
 
 const Lot = models.Lot || model('Lot', LotSchema);

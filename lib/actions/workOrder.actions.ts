@@ -16,6 +16,8 @@ import Product from "../mongodb/database/models/product.model"
 import Labour from "../mongodb/database/models/labour.model"
 import StockMovement, { IStockMovement } from "../mongodb/database/models/stockMovement.model"
 import { createStockMovement } from "./stockMovement.actions"
+import Contractor from "../mongodb/database/models/contractor.model"
+import { get } from "http"
 
 // CREATE
 export const createWorkOrders = async (formData: WorkOrderFormData) => {
@@ -43,10 +45,11 @@ export const createWorkOrders = async (formData: WorkOrderFormData) => {
         }
       });
 
-
       
       const labourDetails = await getLabourById(formData.labour);
-      totalCost += lot.hectareas * labourDetails.valuePerHectare;
+      
+      const valuePerHectare = formData.valuePerHectare === 0 ? labourDetails.valuePerHectare : formData.valuePerHectare;
+      totalCost += lot.hectareas * valuePerHectare;
 
       
       const newWorkOrder = await WorkOrder.create({
@@ -108,8 +111,10 @@ const populateWorkOrder = (query: any) => {
     .populate({ path: 'deposit', model: Deposit, select: '_id name' })
     .populate({ path: 'activity', model: Activity, select: '_id name' })
     .populate({ path: 'labour', model: Labour, select: '_id name' })
-    .populate({ path: 'usedProducts', model: Product, select: '_id name' })
+    .populate({ path: 'usedProducts.product', model: Product, select: '_id name' }) 
     .populate({ path: 'lot', model: Lot, select: '_id name' })
+    .populate({ path: 'contractor', model: Contractor, select: '_id name' })
+    .populate({ path: 'campaign', model: 'Campaign', select: '_id name'})
 }
 
 
@@ -122,9 +127,11 @@ export const getAllWorkOrders = async (orgId: string) => {
     const workOrdersQuery = WorkOrder.find({ orgId });
 
     const workOrders = await populateWorkOrder(workOrdersQuery);
+    console.log('WorkOrders:', JSON.stringify(workOrders, null, 2));
 
     return {
       data: JSON.parse(JSON.stringify(workOrders)),
+      
     };
   } catch (error) {
     handleError(error);
@@ -189,3 +196,16 @@ export async function executeWorkOrder(workOrderId: string) {
     
   }
 }
+
+export async function getPendingWorkOrdersBeforeDate(orgId: string, date: Date) {
+  try {
+    await connectToDatabase();
+
+    const pendingWorkOrders = await WorkOrder.find({ orgId, status: 'pendiente', date: { $lte: date } });
+
+    return JSON.parse(JSON.stringify(pendingWorkOrders));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
